@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="api_key">924fffd84e1a48005766af3a9244275b</string>
+    <string name="app_name">FlickrWidget</string>
+    <string name="api_secret">d97a09b9fa80881b</string>
+    <string name="version">1.0</string>
+    <string name="auth_url">http://www.flickr.com/auth-72157626058092125</string>
+    <string name="auth_code">Enter Authentication Code:</string>
+    <string name="btnok">OK</string>
+    <string name="connectOK">Connected to Flickr</string>
+    <string name="connectKO">Unable to connect to Flickr</string>
+</resources>
