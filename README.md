@@ -6,3 +6,5 @@ FlickrWidget is an Android application which provides a widget to display Flickr
 #### TODO list :
 
 * Displays the latest user's photos activity
+
+_Project is currently in alpha version !!_
