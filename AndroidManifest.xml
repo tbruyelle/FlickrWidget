@@ -11,7 +11,7 @@
 				<category android:name="android.intent.category.LAUNCHER" />
 			</intent-filter>
 		</activity>
-		<activity android:name="com.zmosoft.flickrfree.AuthenticateActivity"
+		<activity android:name="com.kamosoft.flickr.AuthenticateActivity"
 			android:label="@string/authenticate">
 			<intent-filter>
 				<action android:name="com.zmosoft.flickrfree.AUTHENTICATE" />
