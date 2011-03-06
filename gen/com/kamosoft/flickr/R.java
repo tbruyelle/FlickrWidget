@@ -5,7 +5,7 @@
  * should not be modified by hand.
  */
 
-package com.zmosoft.flickrfree;
+package com.kamosoft.flickr;
 
 public final class R {
     public static final class array {

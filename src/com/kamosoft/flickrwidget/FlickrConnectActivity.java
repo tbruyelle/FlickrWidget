@@ -11,6 +11,7 @@ import android.widget.Toast;
 
 import com.kamosoft.flickr.APICalls;
 import com.kamosoft.flickr.AuthenticateActivity;
+import com.kamosoft.flickr.GlobalResources;
 import com.kamosoft.flickr.RestClient;
 import com.kamosoft.flickr.model.JsonFlickrApi;
 
@@ -32,8 +33,8 @@ public class FlickrConnectActivity
         RestClient.setAuth( this );
 
         Button connectButton = (Button) findViewById( R.id.connect_button );
-        SharedPreferences prefs = getSharedPreferences( "Auth", MODE_APPEND );
-        String userId = prefs.getString( "nsid", null );
+        SharedPreferences prefs = getSharedPreferences( GlobalResources.PREFERENCES_ID, 0 );
+        String userId = prefs.getString( GlobalResources.PREF_USERID, null );
 
         /* check if flickr connect is still valid */
         if ( APICalls.authCheckToken() && userId != null )
@@ -80,7 +81,8 @@ public class FlickrConnectActivity
                 if ( resultCode == AuthenticateActivity.AUTH_SUCCESS )
                 {
                     Toast.makeText( this, R.string.connectOK, Toast.LENGTH_SHORT ).show();
-                    String userId = getSharedPreferences( "Auth", MODE_APPEND ).getString( "nsid", null );
+                    String userId = getSharedPreferences( GlobalResources.PREFERENCES_ID, 0 )
+                        .getString( GlobalResources.PREF_USERID, null );
                     RestClient.setAuth( this );
                     showActivityUserPhotos( userId );
                 }
