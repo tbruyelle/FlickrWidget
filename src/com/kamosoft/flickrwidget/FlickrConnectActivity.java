@@ -27,23 +27,28 @@ public class FlickrConnectActivity
         super.onCreate( savedInstanceState );
         setContentView( R.layout.connect );
 
+        AuthenticateActivity.registerAppParameters( this, getString( R.string.api_key ),
+                                                    getString( R.string.api_secret ), getString( R.string.auth_url ) );
+        RestClient.setAuth( this );
+
+        Button connectButton = (Button) findViewById( R.id.connect_button );
         SharedPreferences prefs = getSharedPreferences( "Auth", MODE_APPEND );
         String userId = prefs.getString( "nsid", null );
 
-        Button connectButton = (Button) findViewById( R.id.connect_button );
-
-        if ( userId == null ) //FIXME find another way to check is auth is OK
+        /* check if flickr connect is still valid */
+        if ( APICalls.authCheckToken() && userId != null )
         {
+
+            showActivityUserPhotos( userId );
+            connectButton.setEnabled( false );
+        }
+        else
+        {
+            AuthenticateActivity.LogOut( prefs );
             AuthenticateActivity
                 .registerAppParameters( this, getString( R.string.api_key ), getString( R.string.api_secret ),
                                         getString( R.string.auth_url ) );
             connectButton.setEnabled( true );
-        }
-        else
-        {
-            RestClient.setAuth( this );
-            connectButton.setEnabled( false );
-            showActivityUserPhotos( userId );
         }
     }
 
@@ -58,7 +63,6 @@ public class FlickrConnectActivity
         {
             Log.e( "FlickrWidget", e.getMessage() );
         }
-
     }
 
     public void connect( View view )
@@ -77,6 +81,7 @@ public class FlickrConnectActivity
                 {
                     Toast.makeText( this, R.string.connectOK, Toast.LENGTH_SHORT ).show();
                     String userId = getSharedPreferences( "Auth", MODE_APPEND ).getString( "nsid", null );
+                    RestClient.setAuth( this );
                     showActivityUserPhotos( userId );
                 }
                 else

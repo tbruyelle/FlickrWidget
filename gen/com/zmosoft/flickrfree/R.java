@@ -202,13 +202,9 @@ public final class R {
         public static final int added_favorite=0x7f050001;
         public static final int api_key=0x7f050071;
         public static final int api_secret=0x7f050072;
-        /**  <string name="apikey">c314b61e3cc4baba1b18119e0ac70907</string>
-	<string name="secret">10f8b147a4f19e57</string>
-	<string name="auth_url">http://www.flickr.com/auth-72157623657714648</string> 
-         */
         public static final int app_name=0x7f050000;
         public static final int auth_code=0x7f050003;
-        public static final int auth_url=0x7f050074;
+        public static final int auth_url=0x7f050073;
         public static final int authenticate=0x7f050002;
         public static final int btnaddaccount=0x7f050005;
         public static final int btnaddcommentlabel=0x7f050006;
@@ -320,7 +316,7 @@ public final class R {
         public static final int uploadingpicture=0x7f05006d;
         public static final int uploadstarting=0x7f05006b;
         public static final int userview=0x7f050068;
-        public static final int version=0x7f050073;
+        public static final int version=0x7f050074;
         public static final int youraccountlabel=0x7f050070;
     }
 }

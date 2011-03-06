@@ -2,3 +2,4 @@ bin
 .settings
 .classpath
 .project
+res/values/appinfo.xml
