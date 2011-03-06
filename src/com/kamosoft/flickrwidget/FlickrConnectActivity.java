@@ -7,12 +7,15 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.LinearLayout;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.kamosoft.flickr.APICalls;
 import com.kamosoft.flickr.AuthenticateActivity;
 import com.kamosoft.flickr.GlobalResources;
 import com.kamosoft.flickr.RestClient;
+import com.kamosoft.flickr.model.Item;
 import com.kamosoft.flickr.model.JsonFlickrApi;
 
 public class FlickrConnectActivity
@@ -59,6 +62,31 @@ public class FlickrConnectActivity
         {
             JsonFlickrApi jsApi = APICalls.getActivityUserPhotos( userId, "5d", "", "" );
             Log.i( "FlickrWidget", jsApi.toString() );
+
+            LinearLayout mainLayout = (LinearLayout) findViewById( R.id.main_layout );
+
+            for ( Item item : jsApi.getItems().getItems() )
+            {
+                View child = null;
+                switch ( item.getType() )
+                {
+                    case photo:
+                        child = getLayoutInflater().inflate( R.layout.item_photo, null );
+                        TextView photoText = (TextView) child.findViewById( R.id.photoText );
+                        TextView eventText = (TextView) child.findViewById( R.id.eventText );
+
+                        photoText.setText( item.getTitle().getContent() );
+                        eventText.setText( item.getActivity().getEvents().iterator().next().getContent() );
+
+                    default:
+                        Log.e( "FlickrWidget", "unhandled Item Type : " + item.getType() );
+                }
+
+                if ( child != null )
+                {
+                    mainLayout.addView( child );
+                }
+            }
         }
         catch ( Exception e )
         {
