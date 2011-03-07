@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -14,9 +15,12 @@ import android.widget.Toast;
 import com.kamosoft.flickr.APICalls;
 import com.kamosoft.flickr.AuthenticateActivity;
 import com.kamosoft.flickr.GlobalResources;
+import com.kamosoft.flickr.GlobalResources.ImgSize;
 import com.kamosoft.flickr.RestClient;
+import com.kamosoft.flickr.model.Event;
 import com.kamosoft.flickr.model.Item;
 import com.kamosoft.flickr.model.JsonFlickrApi;
+import com.kamosoft.flickr.model.Photo;
 
 public class FlickrConnectActivity
     extends Activity
@@ -73,10 +77,37 @@ public class FlickrConnectActivity
                     case photo:
                         child = getLayoutInflater().inflate( R.layout.item_photo, null );
                         TextView photoText = (TextView) child.findViewById( R.id.photoText );
-                        TextView eventText = (TextView) child.findViewById( R.id.eventText );
+                        LinearLayout eventsLayout = (LinearLayout) child.findViewById( R.id.events );
+
+                        ImageView imageView = (ImageView) child.findViewById( R.id.photoBitmap );
+                        Photo photo = APICalls.getPhotoInfo( item.getId() ).getPhoto();
+                        imageView.setImageBitmap( GlobalResources.getBitmapFromURL( photo, ImgSize.SMALLSQUARE ) );
 
                         photoText.setText( item.getTitle().getContent() );
-                        eventText.setText( item.getActivity().getEvents().iterator().next().getContent() );
+
+                        for ( Event event : item.getActivity().getEvents() )
+                        {
+                            TextView eventText = new TextView( this );
+                            switch ( event.getType() )
+                            {
+                                case added_to_gallery:
+                                    eventText.setText( "added to gallery by " + event.getUsername() );
+                                    break;
+
+                                case comment:
+                                    eventText.setText( event.getContent() );
+                                    break;
+
+                                case fave:
+                                    eventText.setText( "added to " + event.getUsername() + "'s favorites" );
+                                    break;
+
+                                default:
+                                    Log.e( "FlickrWidget", "unhandled event Type : " + event.getType() );
+                                    eventText.setText( "unhandled event Type : " + event.getType() );
+                            }
+                            eventsLayout.addView( eventText );
+                        }
 
                     default:
                         Log.e( "FlickrWidget", "unhandled Item Type : " + item.getType() );

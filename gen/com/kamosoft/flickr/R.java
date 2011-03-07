@@ -141,7 +141,7 @@ public final class R {
         public static final int chkFamily=0x7f070057;
         public static final int chkFriends=0x7f070056;
         public static final int connect_button=0x7f070014;
-        public static final int eventText=0x7f070048;
+        public static final int events=0x7f070048;
         public static final int gridview=0x7f070040;
         public static final int imgIcon=0x7f070061;
         public static final int imgview=0x7f070045;
@@ -160,7 +160,7 @@ public final class R {
         public static final int manageAccountsHeader=0x7f07007f;
         public static final int manageAccountsHeader1=0x7f070080;
         public static final int manageAccountsHeader2=0x7f070083;
-        public static final int photo=0x7f070046;
+        public static final int photoBitmap=0x7f070046;
         public static final int photoText=0x7f070047;
         public static final int prgNotification=0x7f070063;
         public static final int spnChooseAccount=0x7f070081;
