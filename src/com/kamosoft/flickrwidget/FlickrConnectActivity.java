@@ -53,9 +53,9 @@ public class FlickrConnectActivity
         else
         {
             AuthenticateActivity.LogOut( prefs );
-            AuthenticateActivity
-                .registerAppParameters( this, getString( R.string.api_key ), getString( R.string.api_secret ),
-                                        getString( R.string.auth_url ) );
+//            AuthenticateActivity
+//                .registerAppParameters( this, getString( R.string.api_key ), getString( R.string.api_secret ),
+//                                        getString( R.string.auth_url ) );
             connectButton.setEnabled( true );
         }
     }
@@ -125,7 +125,7 @@ public class FlickrConnectActivity
         }
     }
 
-    public void connect( View view )
+    public void onConnect( View view )
     {
         startActivityForResult( new Intent( this, AuthenticateActivity.class ), AUTHENTICATE );
     }
