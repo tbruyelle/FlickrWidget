@@ -8,4 +8,4 @@
     android:minHeight="216dip"
     android:updatePeriodMillis="7200000" 
     android:initialLayout="@layout/appwidget"    
-    android:configure="com.kamosoft.flickr.FlickrWidgetConfigure" />
+    android:configure="com.kamosoft.flickrwidget.FlickrWidgetConfigure" />
