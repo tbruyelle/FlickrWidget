@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+  <style name="FlickrWidget"></style>
+
+	<!-- Widget styles -->
+  <style name="FlickrWidget.Widget">
+    <item name="android:textAppearance">?android:attr/textAppearanceSmallInverse</item>
+  </style>
+
+  <style name="FlickrWidget.Widget.RootLayout">
+    <item name="android:background">@drawable/widget_bg</item>
+    <item name="android:layout_width">fill_parent</item>
+    <item name="android:layout_height">fill_parent</item>
+    <item name="android:orientation">vertical</item>
+  </style>
+
+  <style name="FlickrWidget.Widget.Title">
+    <item name="android:layout_width">wrap_content</item>
+    <item name="android:layout_height">wrap_content</item>
+  </style>
+
+</resources>

@@ -1,21 +1,32 @@
 /**
- * Copyright - Accor - All Rights Reserved www.accorhotels.com
+ * Copyright 2011 kamosoft
+ * 
+ * Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except
+ * in compliance with the License. You may obtain a copy of the License at
+ * 
+ * http://www.apache.org/licenses/LICENSE-2.0
+ * 
+ * Unless required by applicable law or agreed to in writing, software distributed under the License
+ * is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express
+ * or implied. See the License for the specific language governing permissions and limitations under
+ * the License.
  */
 package com.kamosoft.flickrwidget;
 
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.appwidget.AppWidgetManager;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.SharedPreferences.Editor;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.RemoteViews;
 import android.widget.Toast;
-import android.widget.ToggleButton;
 
 import com.kamosoft.flickr.APICalls;
 import com.kamosoft.flickr.AuthenticateActivity;
@@ -25,10 +36,8 @@ import com.kamosoft.flickr.RestClient;
 /**
  * The widget configuration activity.
  * Perform the flickr authentification and other stuff
- * @author <a href="mailto:thomas.bruyelle@accor.com">tbruyelle</a>
+ * @author Tom
  * created 10 mars 2011
- * @since 
- * @version $Id$
  */
 public class FlickrWidgetConfigure
     extends Activity
@@ -53,7 +62,7 @@ public class FlickrWidgetConfigure
     protected void onCreate( Bundle savedInstanceState )
     {
         super.onCreate( savedInstanceState );
-
+        Log.d( "FlickrWidgetConfigure: Start onCreate" );
         /* set the Activity result to RESULT_CANCELED. 
          * This way, if the user backs-out of the Activity before reaching the end, 
          * the App Widget host is notified that the configuration was cancelled and the App Widget will not be added. */
@@ -81,6 +90,7 @@ public class FlickrWidgetConfigure
             /* auth need to be done, we display the connect button */
             setContentView( R.layout.connect );
         }
+        Log.d( "FlickrWidgetConfigure: End onCreate" );
     }
 
     /**
@@ -140,6 +150,7 @@ public class FlickrWidgetConfigure
     protected void onActivityResult( int requestCode, int resultCode, Intent data )
     {
         super.onActivityResult( requestCode, resultCode, data );
+        Log.d( "FlickrWidgetConfigure: Start onActivityResult" );
         switch ( requestCode )
         {
             case AUTHENTICATE:
@@ -155,11 +166,36 @@ public class FlickrWidgetConfigure
                 }
                 break;
         }
+        Log.d( "FlickrWidgetConfigure: end onActivityResult" );
+    }
+
+    /**
+     * @param context
+     * @param appWidgetId
+     * @return
+     */
+    public static WidgetConfiguration loadConfiguration( Context context, int appWidgetId )
+    {
+        SharedPreferences widgetPrefs = context.getSharedPreferences( Constants.WIDGET_PREFS, 0 );
+        WidgetConfiguration widgetConfiguration = new WidgetConfiguration();
+        widgetConfiguration
+            .setShowUserComments( widgetPrefs.getBoolean( Constants.WIDGET_SHOW_USERCOMMENTS, false ) );
+        widgetConfiguration.setShowUserPhotos( widgetPrefs.getBoolean( Constants.WIDGET_SHOW_USERPHOTOS, false ) );
+        return widgetConfiguration;
     }
 
     public void onConfigurationDone( View view )
     {
+        /* save the configuration */
+        SharedPreferences widgetPrefs = getSharedPreferences( Constants.WIDGET_PREFS, 0 );
+        Editor editor = widgetPrefs.edit();
+        editor.putBoolean( Constants.WIDGET_SHOW_USERCOMMENTS + mAppWidgetId, mCheckBoxUserComments.isChecked() );
+        editor.putBoolean( Constants.WIDGET_SHOW_USERPHOTOS + mAppWidgetId, mCheckBoxUserPhotos.isChecked() );
+        editor.commit();
+
+        
         /* now the widget need to be manually updated */
+        Log.d("Start Widget update");
         AppWidgetManager appWidgetManager = AppWidgetManager.getInstance( this );
 
         RemoteViews views = new RemoteViews( this.getPackageName(), R.layout.appwidget );
@@ -167,6 +203,7 @@ public class FlickrWidgetConfigure
         Intent resultValue = new Intent();
         resultValue.putExtra( AppWidgetManager.EXTRA_APPWIDGET_ID, mAppWidgetId );
         setResult( RESULT_OK, resultValue );
+        Log.d("Widget updated");
         finish();
     }
 

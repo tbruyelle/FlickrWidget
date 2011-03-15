@@ -1,10 +1,22 @@
+/**
+ * Copyright 2011 kamosoft
+ * 
+ * Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except
+ * in compliance with the License. You may obtain a copy of the License at
+ * 
+ * http://www.apache.org/licenses/LICENSE-2.0
+ * 
+ * Unless required by applicable law or agreed to in writing, software distributed under the License
+ * is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express
+ * or implied. See the License for the specific language governing permissions and limitations under
+ * the License.
+ */
 package com.kamosoft.flickrwidget;
 
 import android.app.Activity;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
@@ -22,6 +34,10 @@ import com.kamosoft.flickr.model.Item;
 import com.kamosoft.flickr.model.JsonFlickrApi;
 import com.kamosoft.flickr.model.Photo;
 
+/**
+ * @author Tom
+ * created 15 mars 2011
+ */
 public class FlickrConnectActivity
     extends Activity
 {
@@ -52,10 +68,10 @@ public class FlickrConnectActivity
         }
         else
         {
-            AuthenticateActivity.LogOut( prefs );
-//            AuthenticateActivity
-//                .registerAppParameters( this, getString( R.string.api_key ), getString( R.string.api_secret ),
-//                                        getString( R.string.auth_url ) );
+            //          AuthenticateActivity.LogOut( prefs );
+            //            AuthenticateActivity
+            //                .registerAppParameters( this, getString( R.string.api_key ), getString( R.string.api_secret ),
+            //                                        getString( R.string.auth_url ) );
             connectButton.setEnabled( true );
         }
     }
@@ -65,7 +81,7 @@ public class FlickrConnectActivity
         try
         {
             JsonFlickrApi jsApi = APICalls.getActivityUserPhotos( userId, "5d", "", "" );
-            Log.i( "FlickrWidget", jsApi.toString() );
+            Log.i( jsApi.toString() );
 
             LinearLayout mainLayout = (LinearLayout) findViewById( R.id.main_layout );
 
@@ -103,14 +119,14 @@ public class FlickrConnectActivity
                                     break;
 
                                 default:
-                                    Log.e( "FlickrWidget", "unhandled event Type : " + event.getType() );
+                                    Log.e( "unhandled event Type : " + event.getType() );
                                     eventText.setText( "unhandled event Type : " + event.getType() );
                             }
                             eventsLayout.addView( eventText );
                         }
 
                     default:
-                        Log.e( "FlickrWidget", "unhandled Item Type : " + item.getType() );
+                        Log.e( "unhandled Item Type : " + item.getType() );
                 }
 
                 if ( child != null )
@@ -121,7 +137,7 @@ public class FlickrConnectActivity
         }
         catch ( Exception e )
         {
-            Log.e( "FlickrWidget", e.getMessage() );
+            Log.e( e.getMessage() );
         }
     }
 
