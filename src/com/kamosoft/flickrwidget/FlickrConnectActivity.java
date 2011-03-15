@@ -47,7 +47,7 @@ public class FlickrConnectActivity
         if ( APICalls.authCheckToken() && userId != null )
         {
 
-            showActivityUserPhotos( userId );
+            //showActivityUserPhotos( userId );
             connectButton.setEnabled( false );
         }
         else

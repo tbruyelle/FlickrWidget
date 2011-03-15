@@ -1,13 +1,31 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
   android:layout_width="fill_parent" android:layout_height="fill_parent" android:orientation="vertical">
-  <LinearLayout android:layout_width="fill_parent" android:layout_height="wrap_content"></LinearLayout>
-  <LinearLayout android:layout_width="fill_parent" android:layout_height="wrap_content">
-    <Button android:onClick="onConfigurationDone" android:text="Done"
-      android:layout_width="fill_parent" android:layout_height="wrap_content"
-      android:layout_weight="1" />
-    <Button android:onClick="onCancel" android:text="Cancel" android:layout_width="fill_parent"
+
+  <LinearLayout android:layout_width="fill_parent" android:layout_height="wrap_content"
+    android:layout_alignParentTop="true" android:orientation="vertical">
+    <Button android:id="@+id/connected_to_flickr" android:layout_width="fill_parent"
+      android:layout_height="wrap_content" android:onClick="onDisconnect"
+      android:layout_margin="5dip" />
+
+    <TextView android:layout_width="fill_parent" android:layout_height="wrap_content"
+      android:text="@string/please_configure" android:gravity="center" android:layout_margin="5dip" />
+    <CheckBox android:id="@+id/checkbox_userPhotos" android:layout_width="wrap_content"
+      android:layout_height="wrap_content" android:text="@string/content_userPhotos"
+      android:layout_margin="5dip" />
+    <CheckBox android:id="@+id/checkbox_userComments" android:layout_width="wrap_content"
+      android:layout_height="wrap_content" android:text="@string/content_userComments"
+      android:enabled="false" android:layout_margin="5dip" />
+  </LinearLayout>
+  <LinearLayout android:layout_width="fill_parent" android:layout_height="wrap_content"
+    android:layout_alignParentBottom="true">
+    <Button android:onClick="onConfigurationDone" android:text="@string/done"
+      android:layout_marginLeft="4dip" android:layout_marginRight="2dip" android:layout_width="fill_parent"
+      android:layout_height="wrap_content" android:layout_weight="1" android:id="@+id/button_commit"
+      android:enabled="false" />
+    <Button android:onClick="onCancel" android:text="@string/cancel"
+      android:layout_marginLeft="2dip" android:layout_marginRight="4dip" android:layout_width="fill_parent"
       android:layout_height="wrap_content" android:layout_weight="1" />
   </LinearLayout>
 
-</LinearLayout>
+</RelativeLayout>
