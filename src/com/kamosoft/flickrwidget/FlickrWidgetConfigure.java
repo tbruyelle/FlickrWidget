@@ -15,6 +15,7 @@ package com.kamosoft.flickrwidget;
 
 import android.app.Activity;
 import android.app.AlertDialog;
+import android.app.Dialog;
 import android.appwidget.AppWidgetManager;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -42,6 +43,8 @@ public class FlickrWidgetConfigure
     extends Activity
     implements View.OnClickListener
 {
+    static final int DIALOG_NO_NETWORK = 1;
+
     private int mAppWidgetId;
 
     private static final int AUTHENTICATE = 0;
@@ -66,6 +69,11 @@ public class FlickrWidgetConfigure
          * This way, if the user backs-out of the Activity before reaching the end, 
          * the App Widget host is notified that the configuration was cancelled and the App Widget will not be added. */
         setResult( RESULT_CANCELED );
+
+        if ( !GlobalResources.CheckNetwork( this ) )
+        {
+            showDialog( DIALOG_NO_NETWORK );
+        }
 
         /* retrieve the widget id */
         mAppWidgetId = getIntent().getExtras().getInt( AppWidgetManager.EXTRA_APPWIDGET_ID,
@@ -248,5 +256,28 @@ public class FlickrWidgetConfigure
     public void onClick( View v )
     {
         mCommitButton.setEnabled( isConfigurationOk() );
+    }
+
+    protected Dialog onCreateDialog( int id )
+    {
+        AlertDialog.Builder builder;
+        switch ( id )
+        {
+            case DIALOG_NO_NETWORK:
+                builder = new AlertDialog.Builder( this );
+                builder.setMessage( R.string.no_network ).setTitle( R.string.error )
+                    .setIcon( android.R.drawable.ic_dialog_alert )
+                    .setNeutralButton( "OK", new DialogInterface.OnClickListener()
+                    {
+                        public void onClick( DialogInterface dialog, int id )
+                        {
+                            dialog.dismiss();
+                            FlickrWidgetConfigure.this.finish();
+                        }
+                    } );
+                return builder.create();
+
+        }
+        return null;
     }
 }
