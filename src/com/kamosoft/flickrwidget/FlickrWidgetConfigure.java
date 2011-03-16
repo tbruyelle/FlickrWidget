@@ -25,7 +25,6 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.CheckBox;
-import android.widget.RemoteViews;
 import android.widget.Toast;
 
 import com.kamosoft.flickr.APICalls;
@@ -71,6 +70,8 @@ public class FlickrWidgetConfigure
         /* retrieve the widget id */
         mAppWidgetId = getIntent().getExtras().getInt( AppWidgetManager.EXTRA_APPWIDGET_ID,
                                                        AppWidgetManager.INVALID_APPWIDGET_ID );
+
+        Log.d( "FlickrWidgetConfigure: widget app id = " + mAppWidgetId );
 
         /* push the authentification keys to the library */
         AuthenticateActivity.registerAppParameters( this, getString( R.string.api_key ),
@@ -178,32 +179,46 @@ public class FlickrWidgetConfigure
     {
         SharedPreferences widgetPrefs = context.getSharedPreferences( Constants.WIDGET_PREFS, 0 );
         WidgetConfiguration widgetConfiguration = new WidgetConfiguration();
-        widgetConfiguration
-            .setShowUserComments( widgetPrefs.getBoolean( Constants.WIDGET_SHOW_USERCOMMENTS, false ) );
+        widgetConfiguration.setShowUserComments( widgetPrefs.getBoolean( Constants.WIDGET_SHOW_USERCOMMENTS, false ) );
         widgetConfiguration.setShowUserPhotos( widgetPrefs.getBoolean( Constants.WIDGET_SHOW_USERPHOTOS, false ) );
+        return widgetConfiguration;
+    }
+
+    /**
+     * @param context
+     * @param appWidgetId
+     * @return
+     */
+    public static void saveConfiguration( Context context, int appWidgetId, WidgetConfiguration widgetConfiguration )
+    {
+        SharedPreferences widgetPrefs = context.getSharedPreferences( Constants.WIDGET_PREFS, 0 );
+        Editor editor = widgetPrefs.edit();
+        editor.putBoolean( Constants.WIDGET_SHOW_USERCOMMENTS + appWidgetId, widgetConfiguration.isShowUserComments() );
+        editor.putBoolean( Constants.WIDGET_SHOW_USERPHOTOS + appWidgetId, widgetConfiguration.isShowUserPhotos() );
+        editor.commit();
+    }
+
+    public WidgetConfiguration generateWidgetConfiguration()
+    {
+        WidgetConfiguration widgetConfiguration = new WidgetConfiguration();
+        widgetConfiguration.setShowUserComments( mCheckBoxUserComments.isChecked() );
+        widgetConfiguration.setShowUserPhotos( mCheckBoxUserPhotos.isChecked() );
         return widgetConfiguration;
     }
 
     public void onConfigurationDone( View view )
     {
         /* save the configuration */
-        SharedPreferences widgetPrefs = getSharedPreferences( Constants.WIDGET_PREFS, 0 );
-        Editor editor = widgetPrefs.edit();
-        editor.putBoolean( Constants.WIDGET_SHOW_USERCOMMENTS + mAppWidgetId, mCheckBoxUserComments.isChecked() );
-        editor.putBoolean( Constants.WIDGET_SHOW_USERPHOTOS + mAppWidgetId, mCheckBoxUserPhotos.isChecked() );
-        editor.commit();
+        WidgetConfiguration widgetConfiguration = generateWidgetConfiguration();
+        saveConfiguration( this, mAppWidgetId, widgetConfiguration );
 
-        
         /* now the widget need to be manually updated */
-        Log.d("Start Widget update");
-        AppWidgetManager appWidgetManager = AppWidgetManager.getInstance( this );
-
-        RemoteViews views = new RemoteViews( this.getPackageName(), R.layout.appwidget );
-        appWidgetManager.updateAppWidget( mAppWidgetId, views );
+        Log.d( "FlickrWidgetConfigure: Start Widget update" );
+        WidgetUpdateService.updateWidget( this, widgetConfiguration, mAppWidgetId );
         Intent resultValue = new Intent();
         resultValue.putExtra( AppWidgetManager.EXTRA_APPWIDGET_ID, mAppWidgetId );
         setResult( RESULT_OK, resultValue );
-        Log.d("Widget updated");
+        Log.d( "FlickrWidgetConfigure: Widget updated" );
         finish();
     }
 

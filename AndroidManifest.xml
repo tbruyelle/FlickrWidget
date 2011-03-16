@@ -14,7 +14,7 @@
     </receiver>
     
     <!--  the service which updates the widget -->
-    <service android:name="FlickrWidget$UpdateService" />
+    <service android:name="WidgetUpdateService" />
     
     <!-- the widget configuration activity -->
     <activity android:name="FlickrWidgetConfigure">

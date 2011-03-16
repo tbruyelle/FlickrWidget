@@ -24,4 +24,6 @@ public interface Constants
     String WIDGET_SHOW_USERPHOTOS = "showUserPhotos";
 
     String WIDGET_SHOW_USERCOMMENTS = "showUserComments";
+
+    String EXTRA_WIDGET_CONFIGURATION = "widgetConfiguration";
 }

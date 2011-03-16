@@ -13,11 +13,14 @@
  */
 package com.kamosoft.flickrwidget;
 
+import java.io.Serializable;
+
 /**
  * @author Tom
  * created 15 mars 2011
  */
 public class WidgetConfiguration
+    implements Serializable
 {
     private boolean showUserPhotos;
 
@@ -32,6 +35,11 @@ public class WidgetConfiguration
     public WidgetConfiguration()
     {
 
+    }
+
+    public boolean isDisplayable()
+    {
+        return showUserComments || showUserPhotos;
     }
 
     /**
