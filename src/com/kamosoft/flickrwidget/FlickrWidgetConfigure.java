@@ -70,7 +70,12 @@ public class FlickrWidgetConfigure
         /* retrieve the widget id */
         mAppWidgetId = getIntent().getExtras().getInt( AppWidgetManager.EXTRA_APPWIDGET_ID,
                                                        AppWidgetManager.INVALID_APPWIDGET_ID );
-
+        if ( mAppWidgetId == AppWidgetManager.INVALID_APPWIDGET_ID )
+        {
+            Log.e( "FlickrWidgetConfigure: Error bad appWidgetId" );
+            finish();
+            return;
+        }
         Log.d( "FlickrWidgetConfigure: widget app id = " + mAppWidgetId );
 
         /* push the authentification keys to the library */
@@ -179,8 +184,10 @@ public class FlickrWidgetConfigure
     {
         SharedPreferences widgetPrefs = context.getSharedPreferences( Constants.WIDGET_PREFS, 0 );
         WidgetConfiguration widgetConfiguration = new WidgetConfiguration();
-        widgetConfiguration.setShowUserComments( widgetPrefs.getBoolean( Constants.WIDGET_SHOW_USERCOMMENTS, false ) );
-        widgetConfiguration.setShowUserPhotos( widgetPrefs.getBoolean( Constants.WIDGET_SHOW_USERPHOTOS, false ) );
+        widgetConfiguration.setShowUserComments( widgetPrefs.getBoolean( Constants.WIDGET_SHOW_USERCOMMENTS
+            + appWidgetId, false ) );
+        widgetConfiguration.setShowUserPhotos( widgetPrefs.getBoolean( Constants.WIDGET_SHOW_USERPHOTOS + appWidgetId,
+                                                                       false ) );
         return widgetConfiguration;
     }
 
@@ -213,7 +220,7 @@ public class FlickrWidgetConfigure
         saveConfiguration( this, mAppWidgetId, widgetConfiguration );
 
         /* now the widget need to be manually updated */
-        Log.d( "FlickrWidgetConfigure: Start Widget update" );
+        Log.d( "FlickrWidgetConfigure: Start Widget update with id" + mAppWidgetId );
         WidgetUpdateService.updateWidget( this, widgetConfiguration, mAppWidgetId );
         Intent resultValue = new Intent();
         resultValue.putExtra( AppWidgetManager.EXTRA_APPWIDGET_ID, mAppWidgetId );
