@@ -9,7 +9,14 @@
     <item name="android:layout_width">fill_parent</item>
     <item name="android:layout_height">fill_parent</item>
     <item name="android:orientation">vertical</item>
-
+  </style>
+  
+   <style name="FlickrWidget.LoadingText">
+    <item name="android:layout_width">fill_parent</item>
+    <item name="android:layout_height">fill_parent</item>
+    <item name="android:textAppearance">?android:attr/textAppearanceLargeInverse</item>
+    <item name="android:text">@string/loading</item>
+    <item name="android:gravity">center_vertical|center_horizontal</item>
   </style>
 
   <style name="FlickrWidget.Text">

@@ -16,7 +16,6 @@ package com.kamosoft.flickrwidget;
 import android.appwidget.AppWidgetManager;
 import android.appwidget.AppWidgetProvider;
 import android.content.Context;
-import android.content.Intent;
 
 /**
  * @author Tom
@@ -44,9 +43,7 @@ public class FlickrWidget
             {
                 /* if displayable, we start a service to update the current widget */
                 Log.d( "appWidgetId " + appWidgetIds[i] + " is displayable" );
-                Intent intent = new Intent( context, WidgetUpdateService.class );
-                intent.putExtra( AppWidgetManager.EXTRA_APPWIDGET_ID, appWidgetIds[i] );
-                context.startService( intent );
+                WidgetUpdateService.start( context, appWidgetIds[i] );
             }
             else
             {

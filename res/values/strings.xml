@@ -17,4 +17,5 @@
     <string name="no">No</string>
     <string name="done">Done</string>
     <string name="cancel">Cancel</string>
+    <string name="loading">Loading your Flickr datas...</string>
 </resources>

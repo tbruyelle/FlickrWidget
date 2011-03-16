@@ -23,8 +23,8 @@ import android.widget.RemoteViews;
 
 import com.kamosoft.flickr.APICalls;
 import com.kamosoft.flickr.GlobalResources;
-import com.kamosoft.flickr.RestClient;
 import com.kamosoft.flickr.GlobalResources.ImgSize;
+import com.kamosoft.flickr.RestClient;
 import com.kamosoft.flickr.model.Event;
 import com.kamosoft.flickr.model.Item;
 import com.kamosoft.flickr.model.JsonFlickrApi;
@@ -37,11 +37,53 @@ import com.kamosoft.flickr.model.Photo;
 public class WidgetUpdateService
     extends Service
 {
-    public static void updateWidget( Context context, WidgetConfiguration widgetConfiguration, int appWidgetId )
+    public static void start( Context context, int appWidgetId )
+    {
+        Intent intent = new Intent( context, WidgetUpdateService.class );
+        intent.putExtra( AppWidgetManager.EXTRA_APPWIDGET_ID, appWidgetId );
+        context.startService( intent );
+    }
+
+    /**
+     * @see android.app.Service#onStart(android.content.Intent, int)
+     */
+    @Override
+    public void onStart( Intent intent, int startId )
+    {
+        super.onStart( intent, startId );
+
+        Log.d( "WidgetUpdateService: Start onStart" );
+        RestClient.setAuth( this );
+        if ( !APICalls.authCheckToken() )
+        {
+            Log.i( "WidgetUpdateService: not authenticated" );
+            stopSelf();
+            return;
+        }
+        int appWidgetId = intent.getIntExtra( AppWidgetManager.EXTRA_APPWIDGET_ID,
+                                              AppWidgetManager.INVALID_APPWIDGET_ID );
+        if ( appWidgetId == AppWidgetManager.INVALID_APPWIDGET_ID )
+        {
+            Log.e( "Error bad appWidgetId" );
+            stopSelf();
+            return;
+        }
+        WidgetConfiguration widgetConfiguration = FlickrWidgetConfigure.loadConfiguration( this, appWidgetId );
+
+        updateWidget( this, widgetConfiguration, appWidgetId );
+
+        /* stop the service */
+        this.stopSelf();
+        Log.d( "WidgetUpdateService: end onStart" );
+    }
+
+    public void updateWidget( Context context, WidgetConfiguration widgetConfiguration, int appWidgetId )
     {
         Log.d( "WidgetUpdateService : start updateWidget" );
         // Get the layout for the App Widget and attach an on-click listener to the button
         RemoteViews rootViews = new RemoteViews( context.getPackageName(), R.layout.appwidget );
+
+        rootViews.removeAllViews( R.id.root );
 
         SharedPreferences flickrLibraryPrefs = context.getSharedPreferences( GlobalResources.PREFERENCES_ID, 0 );
         String userId = flickrLibraryPrefs.getString( GlobalResources.PREF_USERID, null );
@@ -125,39 +167,6 @@ public class WidgetUpdateService
         AppWidgetManager manager = AppWidgetManager.getInstance( context );
         manager.updateAppWidget( appWidgetId, rootViews );
         Log.d( "WidgetUpdateService : end updateWidget" );
-    }
-
-    /**
-     * @see android.app.Service#onStart(android.content.Intent, int)
-     */
-    @Override
-    public void onStart( Intent intent, int startId )
-    {
-        super.onStart( intent, startId );
-
-        Log.d( "WidgetUpdateService: Start onStart" );
-        RestClient.setAuth( this );
-        if ( !APICalls.authCheckToken() )
-        {
-            Log.i( "WidgetUpdateService: not authenticated" );
-            stopSelf();
-            return;
-        }
-        int appWidgetId = intent.getIntExtra( AppWidgetManager.EXTRA_APPWIDGET_ID,
-                                              AppWidgetManager.INVALID_APPWIDGET_ID );
-        if ( appWidgetId == AppWidgetManager.INVALID_APPWIDGET_ID )
-        {
-            Log.e( "Error bad appWidgetId" );
-            stopSelf();
-            return;
-        }
-        WidgetConfiguration widgetConfiguration = FlickrWidgetConfigure.loadConfiguration( this, appWidgetId );
-
-        updateWidget( this, widgetConfiguration, appWidgetId );
-
-        /* stop the service */
-        this.stopSelf();
-        Log.d( "WidgetUpdateService: end onStart" );
     }
 
     /**

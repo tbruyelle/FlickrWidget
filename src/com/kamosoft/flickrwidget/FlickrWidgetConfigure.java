@@ -221,7 +221,9 @@ public class FlickrWidgetConfigure
 
         /* now the widget need to be manually updated */
         Log.d( "FlickrWidgetConfigure: Start Widget update with id" + mAppWidgetId );
-        WidgetUpdateService.updateWidget( this, widgetConfiguration, mAppWidgetId );
+
+        WidgetUpdateService.start( this, mAppWidgetId );
+
         Intent resultValue = new Intent();
         resultValue.putExtra( AppWidgetManager.EXTRA_APPWIDGET_ID, mAppWidgetId );
         setResult( RESULT_OK, resultValue );
