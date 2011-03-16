@@ -19,6 +19,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.IBinder;
+import android.text.Html;
 import android.widget.RemoteViews;
 
 import com.kamosoft.flickr.APICalls;
@@ -125,30 +126,38 @@ public class WidgetUpdateService
 
                     for ( Event event : item.getActivity().getEvents() )
                     {
-                        RemoteViews eventRemoveViews = new RemoteViews( context.getPackageName(), R.layout.event_photo );
+                        RemoteViews eventRemoteViews = new RemoteViews( context.getPackageName(), R.layout.event_photo );
                         Log.d( "processing event " + event.getType() );
                         switch ( event.getType() )
                         {
                             case added_to_gallery:
-                                eventRemoveViews.setTextViewText( R.id.event_photo_text,
-                                                                  "added to gallery by " + event.getUsername() );
+                                eventRemoteViews.setImageViewResource( R.id.event_photo_icon, R.drawable.expo );
+
+                                eventRemoteViews.setTextViewText( R.id.event_photo_text, Html
+                                    .fromHtml( getString( R.string.added_to_gallery, event.getUsername() ) ) );
                                 break;
 
                             case comment:
-                                eventRemoveViews.setTextViewText( R.id.event_photo_text, event.getContent() );
+                                eventRemoteViews.setImageViewResource( R.id.event_photo_icon, R.drawable.comment );
+                                eventRemoteViews.setTextViewText( R.id.event_photo_text,
+                                                                  Html.fromHtml( getString( R.string.comment,
+                                                                                            event.getUsername(),
+                                                                                            event.getContent() ) ) );
                                 break;
 
                             case fave:
-                                eventRemoveViews.setTextViewText( R.id.event_photo_text,
-                                                                  "added to " + event.getUsername() + "'s favorites" );
+                                eventRemoteViews.setImageViewResource( R.id.event_photo_icon, R.drawable.fave );
+                                eventRemoteViews.setTextViewText( R.id.event_photo_text,
+                                                                  Html.fromHtml( getString( R.string.fave,
+                                                                                            event.getUsername() ) ) );
                                 break;
 
                             default:
                                 Log.e( "unhandled event Type : " + event.getType() );
-                                eventRemoveViews.setTextViewText( R.id.event_photo_text, "unhandled event Type : "
+                                eventRemoteViews.setTextViewText( R.id.event_photo_text, "unhandled event Type : "
                                     + event.getType() );
                         }
-                        itemRemoteViews.addView( R.id.events, eventRemoveViews );
+                        itemRemoteViews.addView( R.id.events, eventRemoteViews );
                     }
                     break;
 

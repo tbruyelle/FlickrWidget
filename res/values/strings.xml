@@ -17,5 +17,8 @@
     <string name="no">No</string>
     <string name="done">Done</string>
     <string name="cancel">Cancel</string>
-    <string name="loading">Loading your Flickr datas...</string>
+    <string name="loading">Loading your Flickr activity...</string>
+    <string name="added_to_gallery">&lt;u&gt;%s&lt;/u&gt; added to a gallery</string>
+    <string name="fave">&lt;u&gt;%s&lt;/u&gt; added to favorites</string>
+    <string name="comment">&lt;u&gt;%1$s&lt;/u&gt; said : &lt;i&gt;%2$s&lt;/i&gt;</string>
 </resources>

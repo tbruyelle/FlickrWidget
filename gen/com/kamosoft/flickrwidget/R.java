@@ -20,13 +20,16 @@ public final class R {
     public static final class attr {
     }
     public static final class drawable {
-        public static final int comment_link_button=0x7f020000;
-        public static final int fw_widget_bg=0x7f020001;
-        public static final int icon=0x7f020002;
-        public static final int img_wait=0x7f020003;
-        public static final int left_arrow=0x7f020004;
-        public static final int right_arrow=0x7f020005;
-        public static final int widget_bg=0x7f020006;
+        public static final int comment=0x7f020000;
+        public static final int comment_link_button=0x7f020001;
+        public static final int expo=0x7f020002;
+        public static final int fave=0x7f020003;
+        public static final int fw_widget_bg=0x7f020004;
+        public static final int icon=0x7f020005;
+        public static final int img_wait=0x7f020006;
+        public static final int left_arrow=0x7f020007;
+        public static final int right_arrow=0x7f020008;
+        public static final int widget_bg=0x7f020009;
     }
     public static final class id {
         public static final int ActionTitle=0x7f09008b;
@@ -219,6 +222,7 @@ public final class R {
     }
     public static final class string {
         public static final int added_favorite=0x7f060001;
+        public static final int added_to_gallery=0x7f060083;
         public static final int alert_disconnect=0x7f06007d;
         public static final int api_key=0x7f060071;
         public static final int api_secret=0x7f060072;
@@ -247,6 +251,7 @@ public final class R {
         public static final int chkeveryone=0x7f060016;
         public static final int chkfamily=0x7f060018;
         public static final int chkfriends=0x7f060017;
+        public static final int comment=0x7f060085;
         public static final int connectKO=0x7f060076;
         public static final int connectOK=0x7f060075;
         public static final int connected_to_flickr=0x7f06007a;
@@ -262,6 +267,7 @@ public final class R {
         public static final int downloadingpicture=0x7f06001d;
         public static final int downloadstarting=0x7f06006c;
         public static final int entrymorecomments=0x7f06001e;
+        public static final int fave=0x7f060084;
         public static final int favorites=0x7f06001f;
         public static final int filetransfers=0x7f06006f;
         public static final int groups=0x7f06002c;
@@ -352,14 +358,15 @@ public final class R {
     }
     public static final class style {
         public static final int FlickrWidget=0x7f070000;
+        public static final int FlickrWidget_EventIcon=0x7f070005;
         public static final int FlickrWidget_LoadingText=0x7f070002;
-        public static final int FlickrWidget_Photo=0x7f070005;
+        public static final int FlickrWidget_Photo=0x7f070006;
         public static final int FlickrWidget_Text=0x7f070003;
         public static final int FlickrWidget_Text_Title=0x7f070004;
         /**  Widget styles 
          */
         public static final int FlickrWidget_Widget=0x7f070001;
-        public static final int Theme_FlickrWidget=0x7f070006;
+        public static final int Theme_FlickrWidget=0x7f070007;
     }
     public static final class xml {
         public static final int appwidget_info=0x7f040000;
