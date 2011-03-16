@@ -21,4 +21,6 @@
     <string name="added_to_gallery">&lt;u&gt;%s&lt;/u&gt; added to a gallery</string>
     <string name="fave">&lt;u&gt;%s&lt;/u&gt; added to favorites</string>
     <string name="comment">&lt;u&gt;%1$s&lt;/u&gt; said : &lt;i&gt;%2$s&lt;/i&gt;</string>
+    <string name="no_network">No network detected, can\'t add any widget</string>
+    <string name="error">Error</string>
 </resources>

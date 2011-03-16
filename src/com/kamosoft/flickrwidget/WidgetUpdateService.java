@@ -18,6 +18,7 @@ import android.appwidget.AppWidgetManager;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.drawable.Drawable;
 import android.os.IBinder;
 import android.text.Html;
 import android.widget.RemoteViews;
@@ -38,6 +39,11 @@ import com.kamosoft.flickr.model.Photo;
 public class WidgetUpdateService
     extends Service
 {
+    /**
+     * used to downloads the image that may be included in some comments
+     */
+    private Html.ImageGetter mHtmlImageGetter;
+
     public static void start( Context context, int appWidgetId )
     {
         Intent intent = new Intent( context, WidgetUpdateService.class );
@@ -134,22 +140,22 @@ public class WidgetUpdateService
                                 eventRemoteViews.setImageViewResource( R.id.event_photo_icon, R.drawable.expo );
 
                                 eventRemoteViews.setTextViewText( R.id.event_photo_text, Html
-                                    .fromHtml( getString( R.string.added_to_gallery, event.getUsername() ) ) );
+                                    .fromHtml( getString( R.string.added_to_gallery, event.getUsername() ),
+                                               getHtmlImageGetter(), null ) );
                                 break;
 
                             case comment:
                                 eventRemoteViews.setImageViewResource( R.id.event_photo_icon, R.drawable.comment );
-                                eventRemoteViews.setTextViewText( R.id.event_photo_text,
-                                                                  Html.fromHtml( getString( R.string.comment,
-                                                                                            event.getUsername(),
-                                                                                            event.getContent() ) ) );
+                                eventRemoteViews.setTextViewText( R.id.event_photo_text, Html
+                                    .fromHtml( getString( R.string.comment, event.getUsername(), event.getContent() ),
+                                               getHtmlImageGetter(), null ) );
                                 break;
 
                             case fave:
                                 eventRemoteViews.setImageViewResource( R.id.event_photo_icon, R.drawable.fave );
-                                eventRemoteViews.setTextViewText( R.id.event_photo_text,
-                                                                  Html.fromHtml( getString( R.string.fave,
-                                                                                            event.getUsername() ) ) );
+                                eventRemoteViews.setTextViewText( R.id.event_photo_text, Html
+                                    .fromHtml( getString( R.string.fave, event.getUsername() ), getHtmlImageGetter(),
+                                               null ) );
                                 break;
 
                             default:
@@ -176,6 +182,30 @@ public class WidgetUpdateService
         AppWidgetManager manager = AppWidgetManager.getInstance( context );
         manager.updateAppWidget( appWidgetId, rootViews );
         Log.d( "WidgetUpdateService : end updateWidget" );
+    }
+
+    private Html.ImageGetter getHtmlImageGetter()
+    {
+        if ( mHtmlImageGetter == null )
+        {
+            mHtmlImageGetter = new Html.ImageGetter()
+            {
+                private Drawable mBlank;
+
+                @Override
+                public Drawable getDrawable( String source )
+                {
+                    // we don't display the images in the comments
+                    if ( mBlank == null )
+                    {
+                        mBlank = getResources().getDrawable( R.drawable.blank );
+                        mBlank.setBounds( 0, 0, 1, 1 );
+                    }
+                    return mBlank;
+                }
+            };
+        }
+        return mHtmlImageGetter;
     }
 
     /**

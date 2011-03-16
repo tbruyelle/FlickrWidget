@@ -20,16 +20,17 @@ public final class R {
     public static final class attr {
     }
     public static final class drawable {
-        public static final int comment=0x7f020000;
-        public static final int comment_link_button=0x7f020001;
-        public static final int expo=0x7f020002;
-        public static final int fave=0x7f020003;
-        public static final int fw_widget_bg=0x7f020004;
-        public static final int icon=0x7f020005;
-        public static final int img_wait=0x7f020006;
-        public static final int left_arrow=0x7f020007;
-        public static final int right_arrow=0x7f020008;
-        public static final int widget_bg=0x7f020009;
+        public static final int blank=0x7f020000;
+        public static final int comment=0x7f020001;
+        public static final int comment_link_button=0x7f020002;
+        public static final int expo=0x7f020003;
+        public static final int fave=0x7f020004;
+        public static final int fw_widget_bg=0x7f020005;
+        public static final int icon=0x7f020006;
+        public static final int img_wait=0x7f020007;
+        public static final int left_arrow=0x7f020008;
+        public static final int right_arrow=0x7f020009;
+        public static final int widget_bg=0x7f02000a;
     }
     public static final class id {
         public static final int ActionTitle=0x7f09008b;
@@ -267,6 +268,7 @@ public final class R {
         public static final int downloadingpicture=0x7f06001d;
         public static final int downloadstarting=0x7f06006c;
         public static final int entrymorecomments=0x7f06001e;
+        public static final int error=0x7f060087;
         public static final int fave=0x7f060084;
         public static final int favorites=0x7f06001f;
         public static final int filetransfers=0x7f06006f;
@@ -328,6 +330,7 @@ public final class R {
         public static final int msgremoveaccount=0x7f060056;
         public static final int newaccount=0x7f060053;
         public static final int no=0x7f06007f;
+        public static final int no_network=0x7f060086;
         public static final int otherslabel=0x7f060057;
         public static final int picture_retrieve_error=0x7f060058;
         public static final int picturesettings=0x7f060069;
