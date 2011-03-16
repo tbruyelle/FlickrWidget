@@ -1,13 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-  android:layout_width="fill_parent" android:layout_height="wrap_content">
-  <ImageView android:id="@+id/photoBitmap" android:src="@drawable/icon"
-    android:layout_height="wrap_content" android:layout_width="wrap_content"
-    android:layout_marginRight="10dip" />
+  android:layout_width="fill_parent" android:layout_height="wrap_content"
+  android:layout_marginBottom="3dip">
+  <ImageView android:id="@+id/photoBitmap" android:src="@drawable/icon" style="@style/FlickrWidget.Photo" />
   <LinearLayout android:layout_height="wrap_content" android:orientation="vertical"
-    android:layout_width="fill_parent" android:layout_gravity="center">
-    <TextView android:text="TextView" android:id="@+id/photoText" android:layout_width="wrap_content"
-      android:layout_height="wrap_content" />
+    android:layout_width="fill_parent">
+    <TextView android:text="TextView" android:id="@+id/photoText" style="@style/FlickrWidget.Text.Title" />
 
 		<!-- this layout will be completed with the photo events -->
     <LinearLayout android:id="@+id/events" android:orientation="vertical"

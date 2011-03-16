@@ -349,11 +349,13 @@ public final class R {
     }
     public static final class style {
         public static final int FlickrWidget=0x7f070000;
+        public static final int FlickrWidget_Photo=0x7f070004;
+        public static final int FlickrWidget_Text=0x7f070002;
+        public static final int FlickrWidget_Text_Title=0x7f070003;
         /**  Widget styles 
          */
         public static final int FlickrWidget_Widget=0x7f070001;
-        public static final int FlickrWidget_Widget_RootLayout=0x7f070002;
-        public static final int FlickrWidget_Widget_Title=0x7f070003;
+        public static final int Theme_FlickrWidget=0x7f070005;
     }
     public static final class xml {
         public static final int appwidget_info=0x7f040000;

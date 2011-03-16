@@ -23,6 +23,7 @@ import android.widget.RemoteViews;
 
 import com.kamosoft.flickr.APICalls;
 import com.kamosoft.flickr.GlobalResources;
+import com.kamosoft.flickr.RestClient;
 import com.kamosoft.flickr.GlobalResources.ImgSize;
 import com.kamosoft.flickr.model.Event;
 import com.kamosoft.flickr.model.Item;
@@ -135,17 +136,18 @@ public class WidgetUpdateService
         super.onStart( intent, startId );
 
         Log.d( "WidgetUpdateService: Start onStart" );
-
+        RestClient.setAuth( this );
         if ( !APICalls.authCheckToken() )
         {
-            Log.i( "FlickrWidget$UpdateService: not authenticated" );
+            Log.i( "WidgetUpdateService: not authenticated" );
             stopSelf();
             return;
         }
-        int appWidgetId = intent.getIntExtra( AppWidgetManager.EXTRA_APPWIDGET_ID, -1 );
-        if ( appWidgetId == -1 )
+        int appWidgetId = intent.getIntExtra( AppWidgetManager.EXTRA_APPWIDGET_ID,
+                                              AppWidgetManager.INVALID_APPWIDGET_ID );
+        if ( appWidgetId == AppWidgetManager.INVALID_APPWIDGET_ID )
         {
-            Log.e( "Error appWidgetId == -1" );
+            Log.e( "Error bad appWidgetId" );
             stopSelf();
             return;
         }

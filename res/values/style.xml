@@ -3,20 +3,30 @@
   <style name="FlickrWidget"></style>
 
 	<!-- Widget styles -->
-  <style name="FlickrWidget.Widget">
-    <item name="android:textAppearance">?android:attr/textAppearanceSmallInverse</item>
-  </style>
 
-  <style name="FlickrWidget.Widget.RootLayout">
+  <style name="FlickrWidget.Widget">
     <item name="android:background">@drawable/widget_bg</item>
     <item name="android:layout_width">fill_parent</item>
     <item name="android:layout_height">fill_parent</item>
     <item name="android:orientation">vertical</item>
+
   </style>
 
-  <style name="FlickrWidget.Widget.Title">
+  <style name="FlickrWidget.Text">
+    <item name="android:textAppearance">?android:attr/textAppearanceSmallInverse</item>
     <item name="android:layout_width">wrap_content</item>
     <item name="android:layout_height">wrap_content</item>
+  </style>
+
+  <style name="FlickrWidget.Text.Title">
+    <item name="android:textStyle">bold</item>
+  </style>
+
+  <style name="FlickrWidget.Photo">
+    <item name="android:layout_width">40dip</item>
+    <item name="android:layout_height">40dip</item>
+    <item name="android:scaleType">fitCenter</item>
+    <item name="android:layout_marginRight">6dip</item>
   </style>
 
 </resources>
