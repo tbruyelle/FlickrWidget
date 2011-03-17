@@ -21,6 +21,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
+import android.os.AsyncTask;
 import android.os.IBinder;
 import android.text.Html;
 import android.widget.RemoteViews;
@@ -54,6 +55,26 @@ public class WidgetUpdateService
     }
 
     /**
+     * @see android.app.Service#onDestroy()
+     */
+    @Override
+    public void onDestroy()
+    {
+        super.onDestroy();
+        Log.d( "WidgetUpdateService: onDestroy" );
+    }
+
+    /**
+     * @see android.app.Service#onLowMemory()
+     */
+    @Override
+    public void onLowMemory()
+    {
+        super.onLowMemory();
+        Log.d( "WidgetUpdateService: onLowMemory" );
+    }
+
+    /**
      * @see android.app.Service#onStart(android.content.Intent, int)
      */
     @Override
@@ -77,143 +98,175 @@ public class WidgetUpdateService
             stopSelf();
             return;
         }
-        WidgetConfiguration widgetConfiguration = FlickrWidgetConfigure.loadConfiguration( this, appWidgetId );
 
-        updateWidget( this, widgetConfiguration, appWidgetId );
+        /* start to update the widget with an asynctask */
+        new WidgetUpdateTask( this, FlickrWidgetConfigure.loadConfiguration( this, appWidgetId ), appWidgetId )
+            .execute();
 
         /* stop the service */
         this.stopSelf();
         Log.d( "WidgetUpdateService: end onStart" );
     }
 
-    public void updateWidget( Context context, WidgetConfiguration widgetConfiguration, int appWidgetId )
+    private class WidgetUpdateTask
+        extends AsyncTask<Void, Void, Boolean>
     {
-        Log.d( "WidgetUpdateService : start updateWidget" );
-        // Get the layout for the App Widget and attach an on-click listener to the button
-        RemoteViews rootViews = new RemoteViews( context.getPackageName(), R.layout.appwidget );
+        private Context mContext;
 
-        rootViews.removeAllViews( R.id.root );
+        private WidgetConfiguration mWidgetConfiguration;
 
-        // Create an Intent to launch the Flickr website in the default browser
-        Intent widgetIntent = new Intent( Intent.ACTION_VIEW, Uri.parse( Constants.FLICKR_ACTIVITY_URL ) );
-        PendingIntent pendingIntent = PendingIntent.getActivity( this, 0, widgetIntent, 0 );
-        // attach an on-click listener          
-        rootViews.setOnClickPendingIntent( R.id.root, pendingIntent );
+        private int mAppWidgetId;
 
-        SharedPreferences flickrLibraryPrefs = context.getSharedPreferences( GlobalResources.PREFERENCES_ID, 0 );
-        String userId = flickrLibraryPrefs.getString( GlobalResources.PREF_USERID, null );
-        if ( userId == null )
+        public WidgetUpdateTask( Context context, WidgetConfiguration widgetConfiguration, int appWidgetId )
         {
-            Log.e( "userId is null" );
-            return;
+            mContext = context;
+            mWidgetConfiguration = widgetConfiguration;
+            mAppWidgetId = appWidgetId;
         }
 
-        JsonFlickrApi jsApi = APICalls.getActivityUserPhotos( userId, "15d", "", "" );
-        if ( jsApi == null )
+        /**
+         * @see android.os.AsyncTask#doInBackground(Params[])
+         */
+        @Override
+        protected Boolean doInBackground( Void... params )
         {
-            Log.e( "jsApi is null" );
-            return;
-        }
-        Log.i( "JsonFlickrApi retrieved with " + jsApi.getItems().getItems().size() + " items" );
+            Log.d( "WidgetUpdateTask: start updateWidget" );
 
-        for ( Item item : jsApi.getItems().getItems() )
-        {
-            RemoteViews itemRemoteViews = null;
-            Log.d( "processing item " + item.getType() );
-            switch ( item.getType() )
+            if ( !mWidgetConfiguration.isDisplayable() )
             {
-                case photo:
-                    itemRemoteViews = new RemoteViews( context.getPackageName(), R.layout.item_photo );
-
-                    Photo photo = APICalls.getPhotoInfo( item.getId() ).getPhoto();
-                    try
-                    {
-                        itemRemoteViews.setImageViewBitmap( R.id.photoBitmap, GlobalResources
-                            .getBitmapFromURL( photo, ImgSize.SMALLSQUARE ) );
-                        itemRemoteViews.setTextViewText( R.id.photoText, item.getTitle().getContent() );
-                    }
-                    catch ( Exception e )
-                    {
-                        Log.e( e.getMessage(), e );
-                        itemRemoteViews.setTextViewText( R.id.photoText, e.getMessage() );
-                    }
-
-                    for ( Event event : item.getActivity().getEvents() )
-                    {
-                        RemoteViews eventRemoteViews = new RemoteViews( context.getPackageName(), R.layout.event_photo );
-                        Log.d( "processing event " + event.getType() );
-                        switch ( event.getType() )
-                        {
-                            case added_to_gallery:
-                                eventRemoteViews.setImageViewResource( R.id.event_photo_icon, R.drawable.expo );
-
-                                eventRemoteViews.setTextViewText( R.id.event_photo_text, Html
-                                    .fromHtml( getString( R.string.added_to_gallery, event.getUsername() ),
-                                               getHtmlImageGetter(), null ) );
-                                break;
-
-                            case comment:
-                                eventRemoteViews.setImageViewResource( R.id.event_photo_icon, R.drawable.comment );
-                                eventRemoteViews.setTextViewText( R.id.event_photo_text, Html
-                                    .fromHtml( getString( R.string.comment, event.getUsername(), event.getContent() ),
-                                               getHtmlImageGetter(), null ) );
-                                break;
-
-                            case fave:
-                                eventRemoteViews.setImageViewResource( R.id.event_photo_icon, R.drawable.fave );
-                                eventRemoteViews.setTextViewText( R.id.event_photo_text, Html
-                                    .fromHtml( getString( R.string.fave, event.getUsername() ), getHtmlImageGetter(),
-                                               null ) );
-                                break;
-
-                            default:
-                                Log.e( "unhandled event Type : " + event.getType() );
-                                eventRemoteViews.setTextViewText( R.id.event_photo_text, "unhandled event Type : "
-                                    + event.getType() );
-                        }
-                        itemRemoteViews.addView( R.id.events, eventRemoteViews );
-                    }
-                    break;
-
-                default:
-                    Log.e( "unhandled Item Type : " + item.getType() );
+                Log.i( "WidgetUpdateTask: nothing to display" );
+                return true;
             }
-            if ( itemRemoteViews != null )
+            // Get the layout for the App Widget and attach an on-click listener to the button
+            RemoteViews rootViews = new RemoteViews( mContext.getPackageName(), R.layout.appwidget );
+
+            rootViews.removeAllViews( R.id.root );
+
+            // Create an Intent to launch the Flickr website in the default browser
+            Intent widgetIntent = new Intent( Intent.ACTION_VIEW, Uri.parse( Constants.FLICKR_ACTIVITY_URL ) );
+            PendingIntent pendingIntent = PendingIntent.getActivity( mContext, 0, widgetIntent, 0 );
+            // attach an on-click listener          
+            rootViews.setOnClickPendingIntent( R.id.root, pendingIntent );
+
+            SharedPreferences flickrLibraryPrefs = mContext.getSharedPreferences( GlobalResources.PREFERENCES_ID, 0 );
+            String userId = flickrLibraryPrefs.getString( GlobalResources.PREF_USERID, null );
+            if ( userId == null )
             {
-                Log.d( "Adding the item view" );
-                rootViews.addView( R.id.root, itemRemoteViews );
+                Log.e( "WidgetUpdateTask: userId is null" );
+                return false;
             }
 
-        }
-
-        // Push update for this widget to the home screen
-        AppWidgetManager manager = AppWidgetManager.getInstance( context );
-        manager.updateAppWidget( appWidgetId, rootViews );
-        Log.d( "WidgetUpdateService : end updateWidget" );
-    }
-
-    private Html.ImageGetter getHtmlImageGetter()
-    {
-        if ( mHtmlImageGetter == null )
-        {
-            mHtmlImageGetter = new Html.ImageGetter()
+            JsonFlickrApi jsApi = APICalls.getActivityUserPhotos( userId, "15d", "", "" );
+            if ( jsApi == null )
             {
-                private Drawable mBlank;
+                Log.e( "WidgetUpdateTask: jsApi is null" );
+                return false;
+            }
+            Log.i( "WidgetUpdateTask: JsonFlickrApi retrieved with " + jsApi.getItems().getItems().size() + " items" );
 
-                @Override
-                public Drawable getDrawable( String source )
+            for ( Item item : jsApi.getItems().getItems() )
+            {
+                RemoteViews itemRemoteViews = null;
+                Log.d( "WidgetUpdateTask: processing item " + item.getType() );
+                switch ( item.getType() )
                 {
-                    // we don't display the images in the comments
-                    if ( mBlank == null )
-                    {
-                        mBlank = getResources().getDrawable( R.drawable.blank );
-                        mBlank.setBounds( 0, 0, 1, 1 );
-                    }
-                    return mBlank;
+                    case photo:
+                        itemRemoteViews = new RemoteViews( mContext.getPackageName(), R.layout.item_photo );
+
+                        Photo photo = APICalls.getPhotoInfo( item.getId() ).getPhoto();
+                        try
+                        {
+                            itemRemoteViews.setImageViewBitmap( R.id.photoBitmap, GlobalResources
+                                .getBitmapFromURL( photo, ImgSize.SMALLSQUARE ) );
+                            itemRemoteViews.setTextViewText( R.id.photoText, item.getTitle().getContent() );
+                        }
+                        catch ( Exception e )
+                        {
+                            Log.e( e.getMessage(), e );
+                            itemRemoteViews.setTextViewText( R.id.photoText, e.getMessage() );
+                        }
+
+                        for ( Event event : item.getActivity().getEvents() )
+                        {
+                            RemoteViews eventRemoteViews = new RemoteViews( mContext.getPackageName(),
+                                                                            R.layout.event_photo );
+                            Log.d( "WidgetUpdateTask: processing event " + event.getType() );
+                            switch ( event.getType() )
+                            {
+                                case added_to_gallery:
+                                    eventRemoteViews.setImageViewResource( R.id.event_photo_icon, R.drawable.expo );
+
+                                    eventRemoteViews.setTextViewText( R.id.event_photo_text, Html
+                                        .fromHtml( getString( R.string.added_to_gallery, event.getUsername() ),
+                                                   getHtmlImageGetter(), null ) );
+                                    break;
+
+                                case comment:
+                                    eventRemoteViews.setImageViewResource( R.id.event_photo_icon, R.drawable.comment );
+                                    eventRemoteViews.setTextViewText( R.id.event_photo_text,
+                                                                      Html.fromHtml( getString( R.string.comment,
+                                                                                                event.getUsername(),
+                                                                                                event.getContent() ),
+                                                                                     getHtmlImageGetter(), null ) );
+                                    break;
+
+                                case fave:
+                                    eventRemoteViews.setImageViewResource( R.id.event_photo_icon, R.drawable.fave );
+                                    eventRemoteViews.setTextViewText( R.id.event_photo_text, Html
+                                        .fromHtml( getString( R.string.fave, event.getUsername() ),
+                                                   getHtmlImageGetter(), null ) );
+                                    break;
+
+                                default:
+                                    Log.e( "WidgetUpdateTask: unhandled event Type : " + event.getType() );
+                                    eventRemoteViews.setTextViewText( R.id.event_photo_text, "unhandled event Type : "
+                                        + event.getType() );
+                            }
+                            itemRemoteViews.addView( R.id.events, eventRemoteViews );
+                        }
+                        break;
+
+                    default:
+                        Log.e( "WidgetUpdateTask: unhandled Item Type : " + item.getType() );
                 }
-            };
+                if ( itemRemoteViews != null )
+                {
+                    rootViews.addView( R.id.root, itemRemoteViews );
+                }
+
+            }
+
+            // Push update for this widget to the home screen
+            AppWidgetManager manager = AppWidgetManager.getInstance( mContext );
+            manager.updateAppWidget( mAppWidgetId, rootViews );
+            Log.d( "WidgetUpdateTask : end updateWidget" );
+            return true;
         }
-        return mHtmlImageGetter;
+
+        private Html.ImageGetter getHtmlImageGetter()
+        {
+            if ( mHtmlImageGetter == null )
+            {
+                mHtmlImageGetter = new Html.ImageGetter()
+                {
+                    private Drawable mBlank;
+
+                    @Override
+                    public Drawable getDrawable( String source )
+                    {
+                        // we don't display the images in the comments
+                        if ( mBlank == null )
+                        {
+                            mBlank = getResources().getDrawable( R.drawable.blank );
+                            mBlank.setBounds( 0, 0, 1, 1 );
+                        }
+                        return mBlank;
+                    }
+                };
+            }
+            return mHtmlImageGetter;
+        }
+
     }
 
     /**
