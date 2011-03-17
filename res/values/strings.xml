@@ -23,4 +23,5 @@
     <string name="comment">&lt;u&gt;%1$s&lt;/u&gt; said : &lt;i&gt;%2$s&lt;/i&gt;</string>
     <string name="no_network">No network detected, can\'t add any widget</string>
     <string name="error">Error</string>
+    <string name="checking_network">Checking network, please wait...</string>
 </resources>

@@ -16,12 +16,14 @@ package com.kamosoft.flickrwidget;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
+import android.app.ProgressDialog;
 import android.appwidget.AppWidgetManager;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -71,12 +73,14 @@ public class FlickrWidgetConfigure
         setResult( RESULT_CANCELED );
 
         Log.d( "FlickrWidgetConfigure: Checking network" );
-        if ( !GlobalResources.CheckNetwork( this ) )
-        {
-            showDialog( DIALOG_NO_NETWORK );
-        }
-        Log.d( "FlickrWidgetConfigure: network OK" );
+        new CheckNetworkTask().execute();
 
+        Log.d( "FlickrWidgetConfigure: End onCreate" );
+    }
+
+    private void onCheckNetworkSuccess()
+    {
+        Log.d( "FlickrWidgetConfigure: start onCheckNetworkSuccess" );
         /* retrieve the widget id */
         mAppWidgetId = getIntent().getExtras().getInt( AppWidgetManager.EXTRA_APPWIDGET_ID,
                                                        AppWidgetManager.INVALID_APPWIDGET_ID );
@@ -109,7 +113,59 @@ public class FlickrWidgetConfigure
             /* auth need to be done, we display the connect button */
             setContentView( R.layout.connect );
         }
-        Log.d( "FlickrWidgetConfigure: End onCreate" );
+        Log.d( "FlickrWidgetConfigure: end onCheckNetworkSuccess" );
+    }
+
+    /**
+     * use asyncTask to avoid ANR
+     * @author Tom
+     * created 17 mars 2011
+     */
+    private class CheckNetworkTask
+        extends AsyncTask<Void, Void, Boolean>
+    {
+        private Dialog mDialog;
+
+        /**
+         * @see android.os.AsyncTask#onPreExecute()
+         */
+        @Override
+        protected void onPreExecute()
+        {
+            // FIXME why getString throw ResourceNotFoundExeption ? very very weird!
+            //            mDialog = ProgressDialog.show( FlickrWidgetConfigure.this, "",
+            //                                           FlickrWidgetConfigure.this.getString( R.string.checking_network ), true );
+            mDialog = ProgressDialog.show( FlickrWidgetConfigure.this, "", "Checking network, please wait...", true );
+        }
+
+        /**
+         * @see android.os.AsyncTask#doInBackground(Params[])
+         */
+        @Override
+        protected Boolean doInBackground( Void... params )
+        {
+
+            return GlobalResources.CheckNetwork( FlickrWidgetConfigure.this );
+        }
+
+        /**
+         * @see android.os.AsyncTask#onPostExecute(java.lang.Object)
+         */
+        @Override
+        protected void onPostExecute( Boolean result )
+        {
+            mDialog.dismiss();
+            if ( result.booleanValue() )
+            {
+                Log.d( "FlickrWidgetConfigure: network OK" );
+                onCheckNetworkSuccess();
+            }
+            else
+            {
+                Log.d( "FlickrWidgetConfigure: network fail" );
+                FlickrWidgetConfigure.this.showDialog( DIALOG_NO_NETWORK );
+            }
+        }
     }
 
     /**

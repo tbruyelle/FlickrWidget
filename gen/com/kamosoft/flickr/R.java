@@ -249,6 +249,7 @@ public final class R {
         public static final int btnupload=0x7f060011;
         public static final int btnuserpagelabel=0x7f060015;
         public static final int cancel=0x7f060081;
+        public static final int checking_network=0x7f060088;
         public static final int chkeveryone=0x7f060016;
         public static final int chkfamily=0x7f060018;
         public static final int chkfriends=0x7f060017;
