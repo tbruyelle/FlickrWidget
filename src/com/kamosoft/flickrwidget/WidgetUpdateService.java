@@ -31,8 +31,8 @@ import com.kamosoft.flickr.GlobalResources;
 import com.kamosoft.flickr.GlobalResources.ImgSize;
 import com.kamosoft.flickr.RestClient;
 import com.kamosoft.flickr.model.Event;
+import com.kamosoft.flickr.model.FlickrApiResult;
 import com.kamosoft.flickr.model.Item;
-import com.kamosoft.flickr.model.JsonFlickrApi;
 import com.kamosoft.flickr.model.Photo;
 
 /**
@@ -156,15 +156,15 @@ public class WidgetUpdateService
                 return false;
             }
 
-            JsonFlickrApi jsApi = APICalls.getActivityUserPhotos( userId, "15d", "", "" );
-            if ( jsApi == null )
+            FlickrApiResult flickrApiResult = APICalls.getActivityUserPhotos( userId, "15d", "", "" );
+            if ( flickrApiResult == null )
             {
                 Log.e( "WidgetUpdateTask: jsApi is null" );
                 return false;
             }
-            Log.i( "WidgetUpdateTask: JsonFlickrApi retrieved with " + jsApi.getItems().getItems().size() + " items" );
+            Log.i( "WidgetUpdateTask: JsonFlickrApi retrieved with " + flickrApiResult.getItems().getItems().size() + " items" );
 
-            for ( Item item : jsApi.getItems().getItems() )
+            for ( Item item : flickrApiResult.getItems().getItems() )
             {
                 RemoteViews itemRemoteViews = null;
                 Log.d( "WidgetUpdateTask: processing item " + item.getType() );
