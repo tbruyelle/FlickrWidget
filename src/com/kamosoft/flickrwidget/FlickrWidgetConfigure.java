@@ -70,10 +70,12 @@ public class FlickrWidgetConfigure
          * the App Widget host is notified that the configuration was cancelled and the App Widget will not be added. */
         setResult( RESULT_CANCELED );
 
+        Log.d( "FlickrWidgetConfigure: Checking network" );
         if ( !GlobalResources.CheckNetwork( this ) )
         {
             showDialog( DIALOG_NO_NETWORK );
         }
+        Log.d( "FlickrWidgetConfigure: network OK" );
 
         /* retrieve the widget id */
         mAppWidgetId = getIntent().getExtras().getInt( AppWidgetManager.EXTRA_APPWIDGET_ID,
@@ -93,14 +95,17 @@ public class FlickrWidgetConfigure
 
         mFlickrLibraryPrefs = getSharedPreferences( GlobalResources.PREFERENCES_ID, 0 );
 
+        Log.d( "FlickrWidgetConfigure: Checking auth" );
         /* check the authentification */
         if ( APICalls.authCheckToken() )
         {
+            Log.d( "FlickrWidgetConfigure: Auth OK" );
             /* auth OK, we display the configuration layout */
             displayConfigureLayout();
         }
         else
         {
+            Log.d( "FlickrWidgetConfigure: Auth fail" );
             /* auth need to be done, we display the connect button */
             setContentView( R.layout.connect );
         }

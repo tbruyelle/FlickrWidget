@@ -13,12 +13,14 @@
  */
 package com.kamosoft.flickrwidget;
 
+import android.app.PendingIntent;
 import android.app.Service;
 import android.appwidget.AppWidgetManager;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.drawable.Drawable;
+import android.net.Uri;
 import android.os.IBinder;
 import android.text.Html;
 import android.widget.RemoteViews;
@@ -63,7 +65,7 @@ public class WidgetUpdateService
         RestClient.setAuth( this );
         if ( !APICalls.authCheckToken() )
         {
-            Log.i( "WidgetUpdateService: not authenticated" );
+            Log.e( "WidgetUpdateService: not authenticated" );
             stopSelf();
             return;
         }
@@ -91,6 +93,12 @@ public class WidgetUpdateService
         RemoteViews rootViews = new RemoteViews( context.getPackageName(), R.layout.appwidget );
 
         rootViews.removeAllViews( R.id.root );
+
+        // Create an Intent to launch the Flickr website in the default browser
+        Intent widgetIntent = new Intent( Intent.ACTION_VIEW, Uri.parse( Constants.FLICKR_ACTIVITY_URL ) );
+        PendingIntent pendingIntent = PendingIntent.getActivity( this, 0, widgetIntent, 0 );
+        // attach an on-click listener          
+        rootViews.setOnClickPendingIntent( R.id.root, pendingIntent );
 
         SharedPreferences flickrLibraryPrefs = context.getSharedPreferences( GlobalResources.PREFERENCES_ID, 0 );
         String userId = flickrLibraryPrefs.getString( GlobalResources.PREF_USERID, null );

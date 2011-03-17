@@ -26,4 +26,6 @@ public interface Constants
     String WIDGET_SHOW_USERCOMMENTS = "showUserComments";
 
     String EXTRA_WIDGET_CONFIGURATION = "widgetConfiguration";
+
+    String FLICKR_ACTIVITY_URL = "http://m.flickr.com/activity/";
 }
