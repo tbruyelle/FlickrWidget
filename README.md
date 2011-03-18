@@ -1,4 +1,4 @@
-FlickrWidget
+<img src="https://www.sugarsync.com/pf/D723522_6913874_00521" width="30" height="30"/> FlickrWidget
 ============
 
 FlickrWidget is an Android application which provides a widget to display Flickr account informations.
