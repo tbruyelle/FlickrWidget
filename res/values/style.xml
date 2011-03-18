@@ -9,9 +9,10 @@
     <item name="android:layout_width">fill_parent</item>
     <item name="android:layout_height">fill_parent</item>
     <item name="android:orientation">vertical</item>
+    <item name="android:gravity">center_vertical</item>
   </style>
-  
-   <style name="FlickrWidget.LoadingText">
+
+  <style name="FlickrWidget.LoadingText">
     <item name="android:layout_width">fill_parent</item>
     <item name="android:layout_height">fill_parent</item>
     <item name="android:textAppearance">?android:attr/textAppearanceMediumInverse</item>
@@ -28,11 +29,11 @@
   <style name="FlickrWidget.Text.Title">
     <item name="android:textStyle">bold</item>
   </style>
-  
-   <style name="FlickrWidget.EventIcon">
+
+  <style name="FlickrWidget.EventIcon">
     <item name="android:layout_width">wrap_content</item>
     <item name="android:layout_height">wrap_content</item>
-     <item name="android:layout_width">10dip</item>
+    <item name="android:layout_width">10dip</item>
     <item name="android:layout_height">10dip</item>
     <item name="android:scaleType">fitCenter</item>
     <item name="android:layout_marginRight">3dip</item>
