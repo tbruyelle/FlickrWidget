@@ -26,10 +26,13 @@ public class WidgetConfiguration
 
     private boolean showUserComments;
 
-    public WidgetConfiguration( boolean showUserPhotos, boolean showUserComments )
+    private int maxItems = 10;
+
+    public WidgetConfiguration( boolean showUserPhotos, boolean showUserComments, int maxItem )
     {
         this.showUserPhotos = showUserPhotos;
         this.showUserComments = showUserComments;
+        this.setMaxItems( maxItem );
     }
 
     public WidgetConfiguration()
@@ -72,6 +75,22 @@ public class WidgetConfiguration
     public void setShowUserComments( boolean displayUserComments )
     {
         this.showUserComments = displayUserComments;
+    }
+
+    /**
+     * @param maxItems the maxItem to set
+     */
+    public void setMaxItems( int maxItems )
+    {
+        this.maxItems = maxItems;
+    }
+
+    /**
+     * @return the maxItem
+     */
+    public int getMaxItems()
+    {
+        return maxItems;
     }
 
 }

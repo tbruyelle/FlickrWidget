@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- update every 2 hours 
+     1 line
+     4 columns
+ -->
+<appwidget-provider xmlns:android="http://schemas.android.com/apk/res/android"
+    android:minWidth="294dip"
+    android:minHeight="144dip"
+    android:updatePeriodMillis="7200000" 
+    android:initialLayout="@layout/appwidget"    
+    android:configure="com.kamosoft.flickrwidget.size.FlickrWidgetConfigure4X2" />

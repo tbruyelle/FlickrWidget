@@ -109,6 +109,9 @@ public final class R {
         public static final int Theme_FlickrWidget=0x7f060007;
     }
     public static final class xml {
-        public static final int appwidget_info=0x7f040000;
+        public static final int appwidget_info_4x1=0x7f040000;
+        public static final int appwidget_info_4x2=0x7f040001;
+        public static final int appwidget_info_4x3=0x7f040002;
+        public static final int appwidget_info_4x4=0x7f040003;
     }
 }

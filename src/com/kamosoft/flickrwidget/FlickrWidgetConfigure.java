@@ -257,6 +257,7 @@ public class FlickrWidgetConfigure
             + appWidgetId, false ) );
         widgetConfiguration.setShowUserPhotos( widgetPrefs.getBoolean( Constants.WIDGET_SHOW_USERPHOTOS + appWidgetId,
                                                                        false ) );
+        widgetConfiguration.setMaxItems( widgetPrefs.getInt( Constants.WIDGET_MAXITEMS + appWidgetId, 10 ) );
         return widgetConfiguration;
     }
 
@@ -265,13 +266,24 @@ public class FlickrWidgetConfigure
      * @param appWidgetId
      * @return
      */
-    public static void saveConfiguration( Context context, int appWidgetId, WidgetConfiguration widgetConfiguration )
+    public void saveConfiguration( Context context, int appWidgetId, WidgetConfiguration widgetConfiguration )
     {
         SharedPreferences widgetPrefs = context.getSharedPreferences( Constants.WIDGET_PREFS, 0 );
         Editor editor = widgetPrefs.edit();
         editor.putBoolean( Constants.WIDGET_SHOW_USERCOMMENTS + appWidgetId, widgetConfiguration.isShowUserComments() );
         editor.putBoolean( Constants.WIDGET_SHOW_USERPHOTOS + appWidgetId, widgetConfiguration.isShowUserPhotos() );
+        editor.putInt( Constants.WIDGET_MAXITEMS + appWidgetId, getMaxItems() );
         editor.commit();
+    }
+
+    /**
+     * @return the max number of item to be retrieved from the flickrAPI
+     * Depends on the widget size so it is the subclasses FlickrWidgetConfigure4X4, FlickrWidgetConfigure4X3...
+     * which implements this methods
+     */
+    protected int getMaxItems()
+    {
+        throw new UnsupportedOperationException( "this method need to be overrided" );
     }
 
     public WidgetConfiguration generateWidgetConfiguration()

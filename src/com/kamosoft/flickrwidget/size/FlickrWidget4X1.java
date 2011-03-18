@@ -11,31 +11,17 @@
  * or implied. See the License for the specific language governing permissions and limitations under
  * the License.
  */
-package com.kamosoft.flickrwidget;
+package com.kamosoft.flickrwidget.size;
+
+import com.kamosoft.flickrwidget.FlickrWidget;
+
 
 /**
  * @author Tom
- * created 15 mars 2011
+ * created 18 mars 2011
  */
-public interface Constants
+public class FlickrWidget4X1
+    extends FlickrWidget
 {
-    String WIDGET_PREFS = "com.kamosoft.flickrwidget";
 
-    String WIDGET_SHOW_USERPHOTOS = "showUserPhotos";
-
-    String WIDGET_SHOW_USERCOMMENTS = "showUserComments";
-
-    String WIDGET_MAXITEMS = "maxItems";
-
-    String EXTRA_WIDGET_CONFIGURATION = "widgetConfiguration";
-
-    String FLICKR_ACTIVITY_URL = "http://m.flickr.com/activity/";
-
-    int MAX_ITEMS_FOR_4X4 = 9;
-
-    int MAX_ITEMS_FOR_4X3 = 6;
-
-    int MAX_ITEMS_FOR_4X2 = 3;
-
-    int MAX_ITEMS_FOR_4X1 = 1;
 }

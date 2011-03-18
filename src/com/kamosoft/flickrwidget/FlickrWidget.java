@@ -24,6 +24,7 @@ import android.content.Context;
 public class FlickrWidget
     extends AppWidgetProvider
 {
+
     /**
      * @see android.appwidget.AppWidgetProvider#onUpdate(android.content.Context, android.appwidget.AppWidgetManager, int[])
      */

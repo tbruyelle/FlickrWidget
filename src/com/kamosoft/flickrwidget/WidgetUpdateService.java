@@ -156,13 +156,15 @@ public class WidgetUpdateService
                 return false;
             }
 
-            FlickrApiResult flickrApiResult = APICalls.getActivityUserPhotos( userId, "15d", "", "" );
+            FlickrApiResult flickrApiResult = APICalls.getActivityUserPhotos( userId, "15d", String
+                .valueOf( mWidgetConfiguration.getMaxItems() ), "1" );
             if ( flickrApiResult == null )
             {
                 Log.e( "WidgetUpdateTask: jsApi is null" );
                 return false;
             }
-            Log.i( "WidgetUpdateTask: JsonFlickrApi retrieved with " + flickrApiResult.getItems().getItems().size() + " items" );
+            Log.i( "WidgetUpdateTask: JsonFlickrApi retrieved with " + flickrApiResult.getItems().getItems().size()
+                + " items" );
 
             for ( Item item : flickrApiResult.getItems().getItems() )
             {
