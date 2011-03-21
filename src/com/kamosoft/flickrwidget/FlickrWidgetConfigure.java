@@ -93,8 +93,9 @@ public class FlickrWidgetConfigure
         Log.d( "FlickrWidgetConfigure: widget app id = " + mAppWidgetId );
 
         /* push the authentification keys to the library */
-        AuthenticateActivity.registerAppParameters( this, getString( R.string.api_key ),
-                                                    getString( R.string.api_secret ), getString( R.string.auth_url ) );
+        AuthenticateActivity.registerAppParameters( this, getString( R.string.app_name ),
+                                                    getString( R.string.api_key ), getString( R.string.api_secret ),
+                                                    getString( R.string.auth_url ) );
         RestClient.setAuth( this );
 
         mFlickrLibraryPrefs = getSharedPreferences( GlobalResources.PREFERENCES_ID, 0 );
