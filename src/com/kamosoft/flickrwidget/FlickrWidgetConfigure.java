@@ -267,13 +267,29 @@ public class FlickrWidgetConfigure
      * @param appWidgetId
      * @return
      */
-    public void saveConfiguration( Context context, int appWidgetId, WidgetConfiguration widgetConfiguration )
+    public static void clearConfiguration( Context context, int appWidgetId )
+    {
+        SharedPreferences widgetPrefs = context.getSharedPreferences( Constants.WIDGET_PREFS, 0 );
+        Editor editor = widgetPrefs.edit();
+        editor.remove( Constants.WIDGET_SHOW_USERCOMMENTS + appWidgetId );
+        editor.remove( Constants.WIDGET_SHOW_USERPHOTOS + appWidgetId );
+        editor.remove( Constants.WIDGET_MAXITEMS + appWidgetId );
+        editor.commit();
+    }
+
+    /**
+     * @param context
+     * @param appWidgetId
+     * @return
+     */
+    public static void saveConfiguration( Context context, int appWidgetId, WidgetConfiguration widgetConfiguration,
+                                          int maxItems )
     {
         SharedPreferences widgetPrefs = context.getSharedPreferences( Constants.WIDGET_PREFS, 0 );
         Editor editor = widgetPrefs.edit();
         editor.putBoolean( Constants.WIDGET_SHOW_USERCOMMENTS + appWidgetId, widgetConfiguration.isShowUserComments() );
         editor.putBoolean( Constants.WIDGET_SHOW_USERPHOTOS + appWidgetId, widgetConfiguration.isShowUserPhotos() );
-        editor.putInt( Constants.WIDGET_MAXITEMS + appWidgetId, getMaxItems() );
+        editor.putInt( Constants.WIDGET_MAXITEMS + appWidgetId, maxItems );
         editor.commit();
     }
 
@@ -299,7 +315,7 @@ public class FlickrWidgetConfigure
     {
         /* save the configuration */
         WidgetConfiguration widgetConfiguration = generateWidgetConfiguration();
-        saveConfiguration( this, mAppWidgetId, widgetConfiguration );
+        saveConfiguration( this, mAppWidgetId, widgetConfiguration, getMaxItems() );
 
         /* now the widget need to be manually updated */
         Log.d( "FlickrWidgetConfigure: Start Widget update with id" + mAppWidgetId );

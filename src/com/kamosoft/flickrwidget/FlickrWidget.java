@@ -15,6 +15,7 @@ package com.kamosoft.flickrwidget;
 
 import android.appwidget.AppWidgetManager;
 import android.appwidget.AppWidgetProvider;
+import android.content.ComponentName;
 import android.content.Context;
 
 /**
@@ -32,6 +33,14 @@ public class FlickrWidget
     public void onUpdate( Context context, AppWidgetManager appWidgetManager, int[] appWidgetIds )
     {
         Log.d( "FlickrWidget: Start onUpdate with " + appWidgetIds.length + " widgets" );
+
+        int[] appWidgetIds2 = appWidgetManager.getAppWidgetIds( new ComponentName( context, FlickrWidget.class ) );
+        Log.d( "FlickrWidget: installed : " + appWidgetIds2.length + " widgets" );
+        for ( int i = 0; i < appWidgetIds2.length; i++ )
+        {
+            Log.d( "FlickrWidget : installed appWidgetId = " + appWidgetIds2[i] );
+        }
+
         for ( int i = 0; i < appWidgetIds.length; i++ )
         {
             Log.d( "FlickrWidget : appWidgetId = " + appWidgetIds[i] );
@@ -54,6 +63,25 @@ public class FlickrWidget
         }
 
         Log.d( "FlickrWidget: end onUpdate" );
+    }
+
+    /**
+     * @see android.appwidget.AppWidgetProvider#onDeleted(android.content.Context, int[])
+     */
+    @Override
+    public void onDeleted( Context context, int[] appWidgetIds )
+    {
+        super.onDeleted( context, appWidgetIds );
+        Log.d( "FlickrWidget: Start onDeleted with " + appWidgetIds.length + " widgets" );
+        for ( int i = 0; i < appWidgetIds.length; i++ )
+        {
+            Log.d( "FlickrWidget : removing configuration for appWidgetId = " + appWidgetIds[i] );
+
+            /* we clean the widget configuration */
+            FlickrWidgetConfigure.clearConfiguration( context, appWidgetIds[i] );
+        }
+        Log.d( "FlickrWidget: end onDelete" );
+
     }
 
 }
