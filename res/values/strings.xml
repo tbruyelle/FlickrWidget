@@ -2,8 +2,6 @@
 <resources>
     <string name="app_name">FlickrWidget</string>
     <string name="version">1.0</string>
-    <string name="auth_code">Enter Authentication Code:</string>
-    <string name="btnok">OK</string>
     <string name="connectOK">Connected to Flickr</string>
     <string name="connectKO">Unable to connect to Flickr</string>
     <string name="content_userPhotos">User photos activity</string>
