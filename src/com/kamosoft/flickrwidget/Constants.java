@@ -38,4 +38,6 @@ public interface Constants
     int MAX_ITEMS_FOR_4X2 = 3;
 
     int MAX_ITEMS_FOR_4X1 = 1;
+
+    String TIME_FRAME = "30d";
 }

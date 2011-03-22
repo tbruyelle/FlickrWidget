@@ -156,7 +156,7 @@ public class WidgetUpdateService
                 return false;
             }
 
-            FlickrApiResult flickrApiResult = APICalls.getActivityUserPhotos( userId, "15d", String
+            FlickrApiResult flickrApiResult = APICalls.getActivityUserPhotos( userId, Constants.TIME_FRAME, String
                 .valueOf( mWidgetConfiguration.getMaxItems() ), "1" );
             if ( flickrApiResult == null )
             {
