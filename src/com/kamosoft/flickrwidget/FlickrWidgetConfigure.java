@@ -16,24 +16,19 @@ package com.kamosoft.flickrwidget;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
-import android.app.ProgressDialog;
 import android.appwidget.AppWidgetManager;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.Toast;
 
-import com.kamosoft.flickr.APICalls;
-import com.kamosoft.flickr.AuthenticateActivity;
-import com.kamosoft.flickr.GlobalResources;
-import com.kamosoft.flickr.RestClient;
+import com.kamosoft.flickr.FlickrConnect;
 
 /**
  * The widget configuration activity.
@@ -57,7 +52,9 @@ public class FlickrWidgetConfigure
 
     private Button mCommitButton;
 
-    private SharedPreferences mFlickrLibraryPrefs;
+    private FlickrConnect mFlickrConnect;
+
+    //private SharedPreferences mFlickrLibraryPrefs;
 
     /**
      * @see android.app.Activity#onCreate(android.os.Bundle)
@@ -72,15 +69,8 @@ public class FlickrWidgetConfigure
          * the App Widget host is notified that the configuration was cancelled and the App Widget will not be added. */
         setResult( RESULT_CANCELED );
 
-        Log.d( "FlickrWidgetConfigure: Checking network" );
-        new CheckNetworkTask().execute();
+        mFlickrConnect = new FlickrConnect( this );
 
-        Log.d( "FlickrWidgetConfigure: End onCreate" );
-    }
-
-    private void onCheckNetworkSuccess()
-    {
-        Log.d( "FlickrWidgetConfigure: start onCheckNetworkSuccess" );
         /* retrieve the widget id */
         mAppWidgetId = getIntent().getExtras().getInt( AppWidgetManager.EXTRA_APPWIDGET_ID,
                                                        AppWidgetManager.INVALID_APPWIDGET_ID );
@@ -92,17 +82,10 @@ public class FlickrWidgetConfigure
         }
         Log.d( "FlickrWidgetConfigure: widget app id = " + mAppWidgetId );
 
-        /* push the authentification keys to the library */
-        AuthenticateActivity.registerAppParameters( this, getString( R.string.app_name ),
-                                                    getString( R.string.api_key ), getString( R.string.api_secret ),
-                                                    getString( R.string.auth_url ) );
-        RestClient.setAuth( this );
-
-        mFlickrLibraryPrefs = getSharedPreferences( GlobalResources.PREFERENCES_ID, 0 );
-
         Log.d( "FlickrWidgetConfigure: Checking auth" );
+
         /* check the authentification */
-        if ( APICalls.authCheckToken() )
+        if ( mFlickrConnect.IsLoggedIn() )
         {
             Log.d( "FlickrWidgetConfigure: Auth OK" );
             /* auth OK, we display the configuration layout */
@@ -114,59 +97,7 @@ public class FlickrWidgetConfigure
             /* auth need to be done, we display the connect button */
             setContentView( R.layout.connect );
         }
-        Log.d( "FlickrWidgetConfigure: end onCheckNetworkSuccess" );
-    }
-
-    /**
-     * use asyncTask to avoid ANR
-     * @author Tom
-     * created 17 mars 2011
-     */
-    private class CheckNetworkTask
-        extends AsyncTask<Void, Void, Boolean>
-    {
-        private Dialog mDialog;
-
-        /**
-         * @see android.os.AsyncTask#onPreExecute()
-         */
-        @Override
-        protected void onPreExecute()
-        {
-            // FIXME why getString throw ResourceNotFoundExeption ? very very weird!
-            //            mDialog = ProgressDialog.show( FlickrWidgetConfigure.this, "",
-            //                                           FlickrWidgetConfigure.this.getString( R.string.checking_network ), true );
-            mDialog = ProgressDialog.show( FlickrWidgetConfigure.this, "", "Checking network, please wait...", true );
-        }
-
-        /**
-         * @see android.os.AsyncTask#doInBackground(Params[])
-         */
-        @Override
-        protected Boolean doInBackground( Void... params )
-        {
-
-            return GlobalResources.CheckNetwork( FlickrWidgetConfigure.this );
-        }
-
-        /**
-         * @see android.os.AsyncTask#onPostExecute(java.lang.Object)
-         */
-        @Override
-        protected void onPostExecute( Boolean result )
-        {
-            mDialog.dismiss();
-            if ( result.booleanValue() )
-            {
-                Log.d( "FlickrWidgetConfigure: network OK" );
-                onCheckNetworkSuccess();
-            }
-            else
-            {
-                Log.d( "FlickrWidgetConfigure: network fail" );
-                FlickrWidgetConfigure.this.showDialog( DIALOG_NO_NETWORK );
-            }
-        }
+        Log.d( "FlickrWidgetConfigure: End onCreate" );
     }
 
     /**
@@ -182,7 +113,7 @@ public class FlickrWidgetConfigure
         mCommitButton = (Button) findViewById( R.id.button_commit );
 
         /* display the userName */
-        String userName = mFlickrLibraryPrefs.getString( GlobalResources.PREF_USERNAME, null );
+        String userName = mFlickrConnect.getFlickrParameters().getUserName();
         Button button = (Button) findViewById( R.id.connected_to_flickr );
         button.setText( getString( R.string.connected_to_flickr, userName ) );
     }
@@ -193,7 +124,8 @@ public class FlickrWidgetConfigure
      */
     public void onConnect( View view )
     {
-        startActivityForResult( new Intent( this, AuthenticateActivity.class ), AUTHENTICATE );
+        mFlickrConnect.authorize( this, getString( R.string.app_name ), getString( R.string.api_key ),
+                                  getString( R.string.api_secret ), getString( R.string.auth_url ), AUTHENTICATE );
     }
 
     /**
@@ -209,7 +141,7 @@ public class FlickrWidgetConfigure
                 public void onClick( DialogInterface dialog, int id )
                 {
                     Toast.makeText( FlickrWidgetConfigure.this, R.string.disconnect_ok, Toast.LENGTH_SHORT ).show();
-                    AuthenticateActivity.LogOut( mFlickrLibraryPrefs );
+                    mFlickrConnect.logOut();
                     FlickrWidgetConfigure.this.setContentView( R.layout.connect );
                 }
             } ).setNegativeButton( R.string.no, new DialogInterface.OnClickListener()
@@ -230,10 +162,9 @@ public class FlickrWidgetConfigure
         switch ( requestCode )
         {
             case AUTHENTICATE:
-                if ( resultCode == AuthenticateActivity.AUTH_SUCCESS )
+                if ( resultCode == FlickrConnect.AUTH_SUCCESS )
                 {
                     Toast.makeText( this, R.string.connectOK, Toast.LENGTH_SHORT ).show();
-                    RestClient.setAuth( this );
                     displayConfigureLayout();
                 }
                 else

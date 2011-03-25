@@ -26,10 +26,8 @@ import android.os.IBinder;
 import android.text.Html;
 import android.widget.RemoteViews;
 
-import com.kamosoft.flickr.APICalls;
+import com.kamosoft.flickr.FlickrConnect;
 import com.kamosoft.flickr.GlobalResources;
-import com.kamosoft.flickr.GlobalResources.ImgSize;
-import com.kamosoft.flickr.RestClient;
 import com.kamosoft.flickr.model.Event;
 import com.kamosoft.flickr.model.FlickrApiResult;
 import com.kamosoft.flickr.model.Item;
@@ -46,6 +44,8 @@ public class WidgetUpdateService
      * used to downloads the image that may be included in some comments
      */
     private Html.ImageGetter mHtmlImageGetter;
+
+    private FlickrConnect mFlickrConnect;
 
     public static void start( Context context, int appWidgetId )
     {
@@ -83,8 +83,8 @@ public class WidgetUpdateService
         super.onStart( intent, startId );
 
         Log.d( "WidgetUpdateService: Start onStart" );
-        RestClient.setAuth( this );
-        if ( !APICalls.authCheckToken() )
+        mFlickrConnect = new FlickrConnect( this );
+        if ( !mFlickrConnect.IsLoggedIn() )
         {
             Log.e( "WidgetUpdateService: not authenticated" );
             stopSelf();
@@ -149,15 +149,17 @@ public class WidgetUpdateService
             rootViews.setOnClickPendingIntent( R.id.root, pendingIntent );
 
             SharedPreferences flickrLibraryPrefs = mContext.getSharedPreferences( GlobalResources.PREFERENCES_ID, 0 );
-            String userId = flickrLibraryPrefs.getString( GlobalResources.PREF_USERID, null );
+            String userId = mFlickrConnect.getFlickrParameters().getNsid();
             if ( userId == null )
             {
                 Log.e( "WidgetUpdateTask: userId is null" );
                 return false;
             }
 
-            FlickrApiResult flickrApiResult = APICalls.getActivityUserPhotos( userId, Constants.TIME_FRAME, String
-                .valueOf( mWidgetConfiguration.getMaxItems() ), "1" );
+            FlickrApiResult flickrApiResult = mFlickrConnect.getActivityUserPhotos( userId, Constants.TIME_FRAME,
+                                                                                    String
+                                                                                        .valueOf( mWidgetConfiguration
+                                                                                            .getMaxItems() ), "1" );
             if ( flickrApiResult == null )
             {
                 Log.e( "WidgetUpdateTask: jsApi is null" );
@@ -175,11 +177,11 @@ public class WidgetUpdateService
                     case photo:
                         itemRemoteViews = new RemoteViews( mContext.getPackageName(), R.layout.item_photo );
 
-                        Photo photo = APICalls.getPhotoInfo( item.getId() ).getPhoto();
+                        Photo photo = mFlickrConnect.getPhotoInfo( item.getId() ).getPhoto();
                         try
                         {
-                            itemRemoteViews.setImageViewBitmap( R.id.photoBitmap, GlobalResources
-                                .getBitmapFromURL( photo, ImgSize.SMALLSQUARE ) );
+                            itemRemoteViews.setImageViewBitmap( R.id.photoBitmap,
+                                                                photo.getBitmap( Photo.Size.SMALLSQUARE ) );
                             itemRemoteViews.setTextViewText( R.id.photoText, item.getTitle().getContent() );
                         }
                         catch ( Exception e )
