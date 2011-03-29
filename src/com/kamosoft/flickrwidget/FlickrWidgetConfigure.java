@@ -85,18 +85,28 @@ public class FlickrWidgetConfigure
         Log.d( "FlickrWidgetConfigure: Checking auth" );
 
         /* check the authentification */
-        if ( mFlickrConnect.IsLoggedIn() )
+        mFlickrConnect.isLoggedIn( new FlickrConnect.LoginHandler()
         {
-            Log.d( "FlickrWidgetConfigure: Auth OK" );
-            /* auth OK, we display the configuration layout */
-            displayConfigureLayout();
-        }
-        else
-        {
-            Log.d( "FlickrWidgetConfigure: Auth fail" );
-            /* auth need to be done, we display the connect button */
-            setContentView( R.layout.connect );
-        }
+
+            @Override
+            public void onLoginSuccess()
+            {
+                Log.d( "FlickrWidgetConfigure: Auth OK" );
+                /* auth OK, we display the configuration layout */
+                displayConfigureLayout();
+
+            }
+
+            @Override
+            public void onLoginFailed()
+            {
+                Log.d( "FlickrWidgetConfigure: Auth fail" );
+                /* auth need to be done, we display the connect button */
+                setContentView( R.layout.connect );
+
+            }
+        } );
+
         Log.d( "FlickrWidgetConfigure: End onCreate" );
     }
 
