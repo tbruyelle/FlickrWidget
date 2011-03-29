@@ -1,3 +1,3 @@
 <?xml version="1.0" encoding="utf-8"?>
-<TextView xmlns:android="http://schemas.android.com/apk/res/android" style="@style/FlickrWidget.LoadingText"
+<TextView xmlns:android="http://schemas.android.com/apk/res/android" style="@style/FlickrWidget.Title.Loading"
   android:id="@+id/loading_text" />

@@ -18,7 +18,6 @@ import android.app.Service;
 import android.appwidget.AppWidgetManager;
 import android.content.Context;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.AsyncTask;
@@ -27,7 +26,6 @@ import android.text.Html;
 import android.widget.RemoteViews;
 
 import com.kamosoft.flickr.FlickrConnect;
-import com.kamosoft.flickr.GlobalResources;
 import com.kamosoft.flickr.model.Event;
 import com.kamosoft.flickr.model.FlickrApiResult;
 import com.kamosoft.flickr.model.Item;
@@ -117,11 +115,15 @@ public class WidgetUpdateService
 
         private int mAppWidgetId;
 
+        private RemoteViews mRootViews;
+
         public WidgetUpdateTask( Context context, WidgetConfiguration widgetConfiguration, int appWidgetId )
         {
             mContext = context;
             mWidgetConfiguration = widgetConfiguration;
             mAppWidgetId = appWidgetId;
+            // Get the layout for the App Widget and attach an on-click listener to the button
+            mRootViews = new RemoteViews( mContext.getPackageName(), R.layout.appwidget );
         }
 
         /**
@@ -137,18 +139,15 @@ public class WidgetUpdateService
                 Log.i( "WidgetUpdateTask: nothing to display" );
                 return true;
             }
-            // Get the layout for the App Widget and attach an on-click listener to the button
-            RemoteViews rootViews = new RemoteViews( mContext.getPackageName(), R.layout.appwidget );
 
-            rootViews.removeAllViews( R.id.root );
+            mRootViews.removeAllViews( R.id.root );
 
             // Create an Intent to launch the Flickr website in the default browser
             Intent widgetIntent = new Intent( Intent.ACTION_VIEW, Uri.parse( Constants.FLICKR_ACTIVITY_URL ) );
             PendingIntent pendingIntent = PendingIntent.getActivity( mContext, 0, widgetIntent, 0 );
             // attach an on-click listener          
-            rootViews.setOnClickPendingIntent( R.id.root, pendingIntent );
+            mRootViews.setOnClickPendingIntent( R.id.root, pendingIntent );
 
-            SharedPreferences flickrLibraryPrefs = mContext.getSharedPreferences( GlobalResources.PREFERENCES_ID, 0 );
             String userId = mFlickrConnect.getFlickrParameters().getNsid();
             if ( userId == null )
             {
@@ -168,6 +167,12 @@ public class WidgetUpdateService
             Log.i( "WidgetUpdateTask: JsonFlickrApi retrieved with " + flickrApiResult.getItems().getItems().size()
                 + " items" );
 
+            if ( flickrApiResult.getItems().getItems().isEmpty() )
+            {
+                mRootViews.addView( R.id.root, new RemoteViews( mContext.getPackageName(), R.layout.nothing ) );
+                return true;
+            }
+            
             for ( Item item : flickrApiResult.getItems().getItems() )
             {
                 RemoteViews itemRemoteViews = null;
@@ -235,16 +240,29 @@ public class WidgetUpdateService
                 }
                 if ( itemRemoteViews != null )
                 {
-                    rootViews.addView( R.id.root, itemRemoteViews );
+                    mRootViews.addView( R.id.root, itemRemoteViews );
                 }
-
             }
 
-            // Push update for this widget to the home screen
-            AppWidgetManager manager = AppWidgetManager.getInstance( mContext );
-            manager.updateAppWidget( mAppWidgetId, rootViews );
             Log.d( "WidgetUpdateTask : end updateWidget" );
             return true;
+        }
+
+        /**
+         * @see android.os.AsyncTask#onPostExecute(java.lang.Object)
+         */
+        @Override
+        protected void onPostExecute( Boolean result )
+        {
+            if ( !result.booleanValue() )
+            {
+                // display an error message if it goes wrong
+                mRootViews.removeAllViews( R.id.root );
+                mRootViews.addView( R.id.root, new RemoteViews( mContext.getPackageName(), R.layout.error ) );
+            }
+            // Push update for this widget to the home screen
+            AppWidgetManager manager = AppWidgetManager.getInstance( mContext );
+            manager.updateAppWidget( mAppWidgetId, mRootViews );
         }
 
         private Html.ImageGetter getHtmlImageGetter()

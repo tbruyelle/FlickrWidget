@@ -11,13 +11,24 @@
     <item name="android:orientation">vertical</item>
     <item name="android:gravity">center_vertical</item>
   </style>
-
-  <style name="FlickrWidget.LoadingText">
+  
+  <style name="FlickrWidget.Title">
     <item name="android:layout_width">fill_parent</item>
     <item name="android:layout_height">fill_parent</item>
     <item name="android:textAppearance">?android:attr/textAppearanceMediumInverse</item>
-    <item name="android:text">@string/loading</item>
     <item name="android:gravity">center_vertical|center_horizontal</item>
+  </style>
+
+  <style name="FlickrWidget.Title.Loading">
+    <item name="android:text">@string/loading</item>
+  </style>
+  
+  <style name="FlickrWidget.Title.Nothing">
+    <item name="android:text">@string/nothing</item>
+  </style>
+  
+   <style name="FlickrWidget.Title.Error">
+    <item name="android:text">@string/error</item>
   </style>
 
   <style name="FlickrWidget.Text">
@@ -26,7 +37,7 @@
     <item name="android:layout_height">wrap_content</item>
   </style>
 
-  <style name="FlickrWidget.Text.Title">
+  <style name="FlickrWidget.Text.Bold">
     <item name="android:textStyle">bold</item>
   </style>
 
