@@ -11,24 +11,42 @@
     <item name="android:orientation">vertical</item>
     <item name="android:gravity">center_vertical</item>
   </style>
-  
-  <style name="FlickrWidget.Title">
+
+  <style name="FlickrWidget.Info">
     <item name="android:layout_width">fill_parent</item>
     <item name="android:layout_height">fill_parent</item>
-    <item name="android:textAppearance">?android:attr/textAppearanceMediumInverse</item>
     <item name="android:gravity">center_vertical|center_horizontal</item>
+    <item name="android:orientation">horizontal</item>
+  </style>
+
+  <style name="FlickrWidget.Title">
+    <item name="android:layout_width">wrap_content</item>
+    <item name="android:layout_height">wrap_content</item>
+    <item name="android:textAppearance">?android:attr/textAppearanceMediumInverse</item>
   </style>
 
   <style name="FlickrWidget.Title.Loading">
     <item name="android:text">@string/loading</item>
   </style>
-  
+
   <style name="FlickrWidget.Title.Nothing">
     <item name="android:text">@string/nothing</item>
   </style>
-  
-   <style name="FlickrWidget.Title.Error">
+
+  <style name="FlickrWidget.Title.Error">
     <item name="android:text">@string/error</item>
+  </style>
+
+  <style name="FlickrWidget.Title.Icon">
+    <item name="android:paddingRight">5dip</item>
+  </style>
+
+  <style name="FlickrWidget.Title.Icon.Error">
+    <item name="android:src">@drawable/ic_menu_stop</item>
+  </style>
+
+  <style name="FlickrWidget.Title.Icon.Nothing">
+    <item name="android:src">@drawable/ic_menu_sad</item>
   </style>
 
   <style name="FlickrWidget.Text">

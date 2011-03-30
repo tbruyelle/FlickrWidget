@@ -1,3 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
-<TextView xmlns:android="http://schemas.android.com/apk/res/android" style="@style/FlickrWidget.Title.Nothing"
-  android:id="@+id/nothing_text" />
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android" style="@style/FlickrWidget.Info">
+
+  <ImageView style="@style/FlickrWidget.Title.Icon.Nothing" />
+
+  <TextView style="@style/FlickrWidget.Title.Nothing" />
+
+</LinearLayout>

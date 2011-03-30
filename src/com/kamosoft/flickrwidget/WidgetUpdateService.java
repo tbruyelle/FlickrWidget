@@ -171,6 +171,7 @@ public class WidgetUpdateService
                 if ( flickrApiResult.getItems().getItems().isEmpty() )
                 {
                     mRootViews.addView( R.id.root, new RemoteViews( mContext.getPackageName(), R.layout.nothing ) );
+                    pushUpdate();
                     return true;
                 }
 
@@ -244,8 +245,7 @@ public class WidgetUpdateService
                     }
                 }
                 // Push update for this widget to the home screen
-                AppWidgetManager manager = AppWidgetManager.getInstance( mContext );
-                manager.updateAppWidget( mAppWidgetId, mRootViews );
+                pushUpdate();
                 Log.d( "WidgetUpdateTask : end updateWidget" );
                 return true;
             }
@@ -254,6 +254,12 @@ public class WidgetUpdateService
                 Log.e( e.getMessage(), e );
                 return false;
             }
+        }
+
+        private void pushUpdate()
+        {
+            AppWidgetManager manager = AppWidgetManager.getInstance( mContext );
+            manager.updateAppWidget( mAppWidgetId, mRootViews );
         }
 
         /**
@@ -269,8 +275,7 @@ public class WidgetUpdateService
                 mRootViews.removeAllViews( R.id.root );
                 mRootViews.addView( R.id.root, new RemoteViews( mContext.getPackageName(), R.layout.error ) );
                 // Push update for this widget to the home screen
-                AppWidgetManager manager = AppWidgetManager.getInstance( mContext );
-                manager.updateAppWidget( mAppWidgetId, mRootViews );
+                pushUpdate();
             }
         }
 

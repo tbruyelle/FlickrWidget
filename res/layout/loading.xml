@@ -1,3 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
-<TextView xmlns:android="http://schemas.android.com/apk/res/android" style="@style/FlickrWidget.Title.Loading"
-  android:id="@+id/loading_text" />
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android" style="@style/FlickrWidget.Info">
+
+  <ProgressBar android:id="@+android:id/progress_small" style="?android:attr/progressBarStyleSmall"
+    android:layout_width="wrap_content" android:layout_height="wrap_content"
+    android:paddingRight="10dip" />
+  <TextView style="@style/FlickrWidget.Title.Loading" />
+
+</LinearLayout>

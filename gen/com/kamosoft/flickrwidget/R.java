@@ -16,8 +16,10 @@ public final class R {
         public static final int expo=0x7f020002;
         public static final int fave=0x7f020003;
         public static final int fw_widget_bg=0x7f020004;
-        public static final int icon=0x7f020005;
-        public static final int widget_bg=0x7f020006;
+        public static final int ic_menu_sad=0x7f020005;
+        public static final int ic_menu_stop=0x7f020006;
+        public static final int icon=0x7f020007;
+        public static final int widget_bg=0x7f020008;
     }
     public static final class id {
         public static final int AuthHelpInfo=0x7f080001;
@@ -32,20 +34,18 @@ public final class R {
         public static final int authnum3=0x7f08000a;
         public static final int btnAuthenticate=0x7f08000c;
         public static final int btnHelp=0x7f08000b;
-        public static final int button_commit=0x7f08001a;
-        public static final int checkbox_userComments=0x7f080019;
-        public static final int checkbox_userPhotos=0x7f080018;
+        public static final int button_commit=0x7f080017;
+        public static final int checkbox_userComments=0x7f080016;
+        public static final int checkbox_userPhotos=0x7f080015;
         public static final int connect_button=0x7f08000e;
-        public static final int connected_to_flickr=0x7f080017;
-        public static final int error_text=0x7f08000f;
-        public static final int event_photo_icon=0x7f080010;
-        public static final int event_photo_text=0x7f080011;
-        public static final int events=0x7f080014;
-        public static final int loading_text=0x7f080015;
+        public static final int connected_to_flickr=0x7f080014;
+        public static final int event_photo_icon=0x7f08000f;
+        public static final int event_photo_text=0x7f080010;
+        public static final int events=0x7f080013;
         public static final int main_layout=0x7f08000d;
-        public static final int nothing_text=0x7f080016;
-        public static final int photoBitmap=0x7f080012;
-        public static final int photoText=0x7f080013;
+        public static final int photoBitmap=0x7f080011;
+        public static final int photoText=0x7f080012;
+        public static final int progress_small=0x01010000;
         public static final int root=0x7f080000;
     }
     public static final class layout {
@@ -106,18 +106,22 @@ public final class R {
     }
     public static final class style {
         public static final int FlickrWidget=0x7f070000;
-        public static final int FlickrWidget_EventIcon=0x7f070008;
-        public static final int FlickrWidget_Photo=0x7f070009;
-        public static final int FlickrWidget_Text=0x7f070006;
-        public static final int FlickrWidget_Text_Bold=0x7f070007;
-        public static final int FlickrWidget_Title=0x7f070002;
-        public static final int FlickrWidget_Title_Error=0x7f070005;
-        public static final int FlickrWidget_Title_Loading=0x7f070003;
-        public static final int FlickrWidget_Title_Nothing=0x7f070004;
+        public static final int FlickrWidget_EventIcon=0x7f07000c;
+        public static final int FlickrWidget_Info=0x7f070002;
+        public static final int FlickrWidget_Photo=0x7f07000d;
+        public static final int FlickrWidget_Text=0x7f07000a;
+        public static final int FlickrWidget_Text_Bold=0x7f07000b;
+        public static final int FlickrWidget_Title=0x7f070003;
+        public static final int FlickrWidget_Title_Error=0x7f070006;
+        public static final int FlickrWidget_Title_Icon=0x7f070007;
+        public static final int FlickrWidget_Title_Icon_Error=0x7f070008;
+        public static final int FlickrWidget_Title_Icon_Nothing=0x7f070009;
+        public static final int FlickrWidget_Title_Loading=0x7f070004;
+        public static final int FlickrWidget_Title_Nothing=0x7f070005;
         /**  Widget styles 
          */
         public static final int FlickrWidget_Widget=0x7f070001;
-        public static final int Theme_FlickrWidget=0x7f07000a;
+        public static final int Theme_FlickrWidget=0x7f07000e;
     }
     public static final class xml {
         public static final int appwidget_info_4x1=0x7f040000;
