@@ -286,6 +286,11 @@ public class FlickrWidgetConfigure
         finish();
     }
 
+    public void onAbout( View view )
+    {
+        new AboutDialog( this ).show();
+    }
+
     private boolean isConfigurationOk()
     {
         return mRadioButtonUserPhotos.isChecked() || mRadioButtonUserComments.isChecked();

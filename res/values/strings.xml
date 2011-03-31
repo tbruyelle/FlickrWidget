@@ -1,26 +1,32 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_name">FlickrWidget</string>
-    <string name="version">1.0</string>
-    <string name="connectOK">Connected to Flickr</string>
-    <string name="connectKO">Unable to connect to Flickr</string>
-    <string name="content_userPhotos">User photos activity</string>
-    <string name="please_configure">Please configure the content of your widget</string>
-    <string name="content_userComments">User comments activity</string>
-    <string name="connected_to_flickr">%s is connected to Flickr</string>
-    <string name="disconnect">Disconnect</string>
-    <string name="disconnect_ok">Disconnect successfull</string>
-    <string name="alert_disconnect">Do you want to disconnect from Flickr ?</string>
-    <string name="yes">Yes</string>
-    <string name="no">No</string>
-    <string name="done">Done</string>
-    <string name="cancel">Cancel</string>
-    <string name="loading">Loading your Flickr activity...</string>
-    <string name="nothing">Nothing to display</string>
-    <string name="error">Sorry an error occurs...</string>
-    <string name="added_to_gallery">&lt;u&gt;%s&lt;/u&gt; added to a gallery</string>
-    <string name="fave">&lt;u&gt;%s&lt;/u&gt; added to favorites</string>
-    <string name="comment">&lt;u&gt;%1$s&lt;/u&gt; said : &lt;i&gt;%2$s&lt;/i&gt;</string>
-    <string name="no_network">No network detected, can\'t add any widget</string>
-    <string name="checking_network">Checking network, please wait...</string>
+  <string name="app_name">FlickrWidget</string>
+  <string name="version">1.0</string>
+  <string name="connectOK">Connected to Flickr</string>
+  <string name="connectKO">Unable to connect to Flickr</string>
+  <string name="content_userPhotos">User photos activity</string>
+  <string name="please_configure">Please configure the content of your widget</string>
+  <string name="content_userComments">User comments activity</string>
+  <string name="connected_to_flickr">%s is connected to Flickr</string>
+  <string name="disconnect">Disconnect</string>
+  <string name="disconnect_ok">Disconnect successfull</string>
+  <string name="alert_disconnect">Do you want to disconnect from Flickr ?</string>
+  <string name="yes">Yes</string>
+  <string name="ok">Ok</string>
+  <string name="no">No</string>
+  <string name="done">Done</string>
+  <string name="cancel">Cancel</string>
+  <string name="loading">Loading your Flickr activity...</string>
+  <string name="nothing">Nothing to display</string>
+  <string name="error">Sorry an error occurs...</string>
+  <string name="added_to_gallery">&lt;u&gt;%s&lt;/u&gt; added to a gallery</string>
+  <string name="fave">&lt;u&gt;%s&lt;/u&gt; added to favorites</string>
+  <string name="comment">&lt;u&gt;%1$s&lt;/u&gt; said : &lt;i&gt;%2$s&lt;/i&gt;</string>
+  <string name="no_network">No network detected, can\'t add any widget</string>
+  <string name="checking_network">Checking network, please wait...</string>
+  <string name="about_content">
+    <a href="http://kamosoft.wordpress.com">Kamosoft</a>
+    (c) 2011
+  </string>
+  <string name="about">About</string>
 </resources>
