@@ -18,11 +18,13 @@ import android.app.Service;
 import android.appwidget.AppWidgetManager;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Bitmap;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.IBinder;
 import android.text.Html;
+import android.text.Spanned;
 import android.widget.RemoteViews;
 
 import com.kamosoft.flickr.FlickrConnect;
@@ -157,9 +159,22 @@ public class WidgetUpdateService
                     return false;
                 }
 
-                FlickrApiResult flickrApiResult = mFlickrConnect
-                    .getActivityUserPhotos( userId, Constants.TIME_FRAME,
-                                            String.valueOf( mWidgetConfiguration.getMaxItems() ), "1" );
+                FlickrApiResult flickrApiResult = null;
+                switch ( mWidgetConfiguration.getContent() )
+                {
+                    case userComments:
+                        Log.d( "WidgetUpdateTask: Call userComments" );
+                        flickrApiResult = mFlickrConnect.getActivityUserComments( userId, String
+                            .valueOf( mWidgetConfiguration.getMaxItems() ), "1" );
+                        break;
+
+                    case userPhotos:
+                        Log.d( "WidgetUpdateTask: Call userPhotos" );
+                        flickrApiResult = mFlickrConnect.getActivityUserPhotos( userId, Constants.TIME_FRAME, String
+                            .valueOf( mWidgetConfiguration.getMaxItems() ), "1" );
+                        break;
+                }
+
                 if ( flickrApiResult == null )
                 {
                     Log.e( "WidgetUpdateTask: jsApi is null" );
@@ -185,16 +200,35 @@ public class WidgetUpdateService
                             itemRemoteViews = new RemoteViews( mContext.getPackageName(), R.layout.item_photo );
 
                             Photo photo = mFlickrConnect.getPhotoInfo( item.getId() ).getPhoto();
+                            if ( photo == null )
+                            {
+                                Log.e( "getPhotoInfo returns null for item " + item.getId() );
+                                continue;
+                            }
                             try
                             {
-                                itemRemoteViews.setImageViewBitmap( R.id.photoBitmap,
-                                                                    photo.getBitmap( Photo.Size.SMALLSQUARE ) );
-                                itemRemoteViews.setTextViewText( R.id.photoText, item.getTitle().getContent() );
+                                Bitmap bitmap = photo.getBitmap( Photo.Size.SMALLSQUARE );
+                                if ( bitmap == null )
+                                {
+                                    Log.e( "photo.getBitmap returns null for item " + item.getId() );
+                                    continue;
+                                }
+                                itemRemoteViews.setImageViewBitmap( R.id.photoBitmap, bitmap );
+                                if ( item.getTitle().getContent() == null )
+                                {
+                                    Log.e( "item.getTitle().getContent() returns null" );
+                                }
+                                else
+                                {
+                                    itemRemoteViews.setTextViewText( R.id.photoText, item.getTitle().getContent() );
+                                }
                             }
                             catch ( Exception e )
                             {
                                 Log.e( e.getMessage(), e );
-                                itemRemoteViews.setTextViewText( R.id.photoText, e.getMessage() );
+                                itemRemoteViews
+                                    .setTextViewText( R.id.photoText,
+                                                      e.getMessage() == null ? "Exception" : e.getMessage() );
                             }
 
                             for ( Event event : item.getActivity().getEvents() )
@@ -207,24 +241,42 @@ public class WidgetUpdateService
                                     case added_to_gallery:
                                         eventRemoteViews.setImageViewResource( R.id.event_photo_icon, R.drawable.expo );
 
-                                        eventRemoteViews.setTextViewText( R.id.event_photo_text, Html
-                                            .fromHtml( getString( R.string.added_to_gallery, event.getUsername() ),
-                                                       getHtmlImageGetter(), null ) );
+                                        Spanned txt = Html.fromHtml( getString( R.string.added_to_gallery,
+                                                                                event.getUsername() ),
+                                                                     getHtmlImageGetter(), null );
+                                        if ( txt == null )
+                                        {
+                                            Log.e( "added_to_gallery : txt is null for item " + item.getId() );
+                                            continue;
+                                        }
+                                        eventRemoteViews.setTextViewText( R.id.event_photo_text, txt );
                                         break;
 
                                     case comment:
                                         eventRemoteViews.setImageViewResource( R.id.event_photo_icon,
                                                                                R.drawable.comment );
-                                        eventRemoteViews.setTextViewText( R.id.event_photo_text, Html
-                                            .fromHtml( getString( R.string.comment, event.getUsername(),
-                                                                  event.getContent() ), getHtmlImageGetter(), null ) );
+
+                                        txt = Html.fromHtml( getString( R.string.comment, event.getUsername(),
+                                                                        event.getContent() ), getHtmlImageGetter(),
+                                                             null );
+                                        if ( txt == null )
+                                        {
+                                            Log.e( "comment : txt is null for item " + item.getId() );
+                                            continue;
+                                        }
+                                        eventRemoteViews.setTextViewText( R.id.event_photo_text, txt );
                                         break;
 
                                     case fave:
                                         eventRemoteViews.setImageViewResource( R.id.event_photo_icon, R.drawable.fave );
-                                        eventRemoteViews.setTextViewText( R.id.event_photo_text, Html
-                                            .fromHtml( getString( R.string.fave, event.getUsername() ),
-                                                       getHtmlImageGetter(), null ) );
+                                        txt = Html.fromHtml( getString( R.string.fave, event.getUsername() ),
+                                                             getHtmlImageGetter(), null );
+                                        if ( txt == null )
+                                        {
+                                            Log.e( "fave : txt is null for item " + item.getId() );
+                                            continue;
+                                        }
+                                        eventRemoteViews.setTextViewText( R.id.event_photo_text, txt );
                                         break;
 
                                     default:
@@ -251,6 +303,7 @@ public class WidgetUpdateService
             }
             catch ( Exception e )
             {
+                Log.e( "Unable to update widget" );
                 Log.e( e.getMessage(), e );
                 return false;
             }
@@ -258,8 +311,10 @@ public class WidgetUpdateService
 
         private void pushUpdate()
         {
+            Log.d( "start pushUpdate() for id " + mAppWidgetId );
             AppWidgetManager manager = AppWidgetManager.getInstance( mContext );
             manager.updateAppWidget( mAppWidgetId, mRootViews );
+            Log.d( "end pushUpdate()" );
         }
 
         /**

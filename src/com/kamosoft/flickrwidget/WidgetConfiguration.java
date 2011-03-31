@@ -22,16 +22,17 @@ import java.io.Serializable;
 public class WidgetConfiguration
     implements Serializable
 {
-    private boolean showUserPhotos;
+    public enum Content {
+        userPhotos, userComments
+    };
 
-    private boolean showUserComments;
+    private Content content;
 
     private int maxItems = 10;
 
-    public WidgetConfiguration( boolean showUserPhotos, boolean showUserComments, int maxItem )
+    public WidgetConfiguration( Content content, int maxItem )
     {
-        this.showUserPhotos = showUserPhotos;
-        this.showUserComments = showUserComments;
+        this.content = content;
         this.setMaxItems( maxItem );
     }
 
@@ -40,41 +41,36 @@ public class WidgetConfiguration
 
     }
 
+    /**
+     * @return the content
+     */
+    public Content getContent()
+    {
+        return content;
+    }
+
+    /**
+     * @param content the content to set
+     */
+    public void setContent( Content content )
+    {
+        this.content = content;
+    }
+
+    /**
+     * @param content the content to set
+     */
+    public void setContent( String content )
+    {
+        if ( content != null )
+        {
+            this.content = Content.valueOf( content );
+        }
+    }
+
     public boolean isDisplayable()
     {
-        return showUserComments || showUserPhotos;
-    }
-
-    /**
-     * @return the displayUserPhotos
-     */
-    public boolean isShowUserPhotos()
-    {
-        return showUserPhotos;
-    }
-
-    /**
-     * @param displayUserPhotos the displayUserPhotos to set
-     */
-    public void setShowUserPhotos( boolean displayUserPhotos )
-    {
-        this.showUserPhotos = displayUserPhotos;
-    }
-
-    /**
-     * @return the displayUserComments
-     */
-    public boolean isShowUserComments()
-    {
-        return showUserComments;
-    }
-
-    /**
-     * @param displayUserComments the displayUserComments to set
-     */
-    public void setShowUserComments( boolean displayUserComments )
-    {
-        this.showUserComments = displayUserComments;
+        return content != null;
     }
 
     /**

@@ -21,10 +21,6 @@ public interface Constants
 {
     String WIDGET_PREFS = "com.kamosoft.flickrwidget";
 
-    String WIDGET_SHOW_USERPHOTOS = "showUserPhotos";
-
-    String WIDGET_SHOW_USERCOMMENTS = "showUserComments";
-
     String WIDGET_MAXITEMS = "maxItems";
 
     String EXTRA_WIDGET_CONFIGURATION = "widgetConfiguration";
@@ -40,4 +36,6 @@ public interface Constants
     int MAX_ITEMS_FOR_4X1 = 1;
 
     String TIME_FRAME = "30d";
+
+    String WIDGET_CONTENT = "widgetContent";
 }

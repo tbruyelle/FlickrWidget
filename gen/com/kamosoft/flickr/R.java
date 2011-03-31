@@ -35,8 +35,6 @@ public final class R {
         public static final int btnAuthenticate=0x7f08000c;
         public static final int btnHelp=0x7f08000b;
         public static final int button_commit=0x7f080017;
-        public static final int checkbox_userComments=0x7f080016;
-        public static final int checkbox_userPhotos=0x7f080015;
         public static final int connect_button=0x7f08000e;
         public static final int connected_to_flickr=0x7f080014;
         public static final int event_photo_icon=0x7f08000f;
@@ -46,6 +44,8 @@ public final class R {
         public static final int photoBitmap=0x7f080011;
         public static final int photoText=0x7f080012;
         public static final int progress_small=0x01010000;
+        public static final int radioButton_userComments=0x7f080016;
+        public static final int radioButton_userPhotos=0x7f080015;
         public static final int root=0x7f080000;
     }
     public static final class layout {

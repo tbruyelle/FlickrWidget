@@ -25,10 +25,11 @@ import android.content.SharedPreferences.Editor;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
-import android.widget.CheckBox;
+import android.widget.RadioButton;
 import android.widget.Toast;
 
 import com.kamosoft.flickr.FlickrConnect;
+import com.kamosoft.flickrwidget.WidgetConfiguration.Content;
 
 /**
  * The widget configuration activity.
@@ -46,9 +47,9 @@ public class FlickrWidgetConfigure
 
     private static final int AUTHENTICATE = 0;
 
-    private CheckBox mCheckBoxUserPhotos;
+    private RadioButton mRadioButtonUserPhotos;
 
-    private CheckBox mCheckBoxUserComments;
+    private RadioButton mRadioButtonUserComments;
 
     private Button mCommitButton;
 
@@ -94,7 +95,6 @@ public class FlickrWidgetConfigure
                 Log.d( "FlickrWidgetConfigure: Auth OK" );
                 /* auth OK, we display the configuration layout */
                 displayConfigureLayout();
-
             }
 
             @Override
@@ -103,6 +103,14 @@ public class FlickrWidgetConfigure
                 Log.d( "FlickrWidgetConfigure: Auth fail" );
                 /* auth need to be done, we display the connect button */
                 setContentView( R.layout.connect );
+            }
+
+            @Override
+            public void onLoginError()
+            {
+                Log.d( "FlickrWidgetConfigure: Auth error" );
+                Toast.makeText( FlickrWidgetConfigure.this, "Network error", Toast.LENGTH_SHORT ).show();
+                FlickrWidgetConfigure.this.finish();
 
             }
         } );
@@ -116,10 +124,10 @@ public class FlickrWidgetConfigure
     private void displayConfigureLayout()
     {
         setContentView( R.layout.widget_configure );
-        mCheckBoxUserComments = (CheckBox) findViewById( R.id.checkbox_userComments );
-        mCheckBoxUserComments.setOnClickListener( this );
-        mCheckBoxUserPhotos = (CheckBox) findViewById( R.id.checkbox_userPhotos );
-        mCheckBoxUserPhotos.setOnClickListener( this );
+        mRadioButtonUserComments = (RadioButton) findViewById( R.id.radioButton_userComments );
+        mRadioButtonUserComments.setOnClickListener( this );
+        mRadioButtonUserPhotos = (RadioButton) findViewById( R.id.radioButton_userPhotos );
+        mRadioButtonUserPhotos.setOnClickListener( this );
         mCommitButton = (Button) findViewById( R.id.button_commit );
 
         /* display the userName */
@@ -195,10 +203,8 @@ public class FlickrWidgetConfigure
     {
         SharedPreferences widgetPrefs = context.getSharedPreferences( Constants.WIDGET_PREFS, 0 );
         WidgetConfiguration widgetConfiguration = new WidgetConfiguration();
-        widgetConfiguration.setShowUserComments( widgetPrefs.getBoolean( Constants.WIDGET_SHOW_USERCOMMENTS
-            + appWidgetId, false ) );
-        widgetConfiguration.setShowUserPhotos( widgetPrefs.getBoolean( Constants.WIDGET_SHOW_USERPHOTOS + appWidgetId,
-                                                                       false ) );
+        widgetConfiguration.setContent( widgetPrefs.getString( Constants.WIDGET_CONTENT + appWidgetId, null ) );
+
         widgetConfiguration.setMaxItems( widgetPrefs.getInt( Constants.WIDGET_MAXITEMS + appWidgetId, 10 ) );
         return widgetConfiguration;
     }
@@ -212,8 +218,7 @@ public class FlickrWidgetConfigure
     {
         SharedPreferences widgetPrefs = context.getSharedPreferences( Constants.WIDGET_PREFS, 0 );
         Editor editor = widgetPrefs.edit();
-        editor.remove( Constants.WIDGET_SHOW_USERCOMMENTS + appWidgetId );
-        editor.remove( Constants.WIDGET_SHOW_USERPHOTOS + appWidgetId );
+        editor.remove( Constants.WIDGET_CONTENT + appWidgetId );
         editor.remove( Constants.WIDGET_MAXITEMS + appWidgetId );
         editor.commit();
     }
@@ -228,8 +233,8 @@ public class FlickrWidgetConfigure
     {
         SharedPreferences widgetPrefs = context.getSharedPreferences( Constants.WIDGET_PREFS, 0 );
         Editor editor = widgetPrefs.edit();
-        editor.putBoolean( Constants.WIDGET_SHOW_USERCOMMENTS + appWidgetId, widgetConfiguration.isShowUserComments() );
-        editor.putBoolean( Constants.WIDGET_SHOW_USERPHOTOS + appWidgetId, widgetConfiguration.isShowUserPhotos() );
+        editor.putString( Constants.WIDGET_CONTENT + appWidgetId,
+                          widgetConfiguration.getContent() == null ? null : widgetConfiguration.getContent().name() );
         editor.putInt( Constants.WIDGET_MAXITEMS + appWidgetId, maxItems );
         editor.commit();
     }
@@ -247,8 +252,14 @@ public class FlickrWidgetConfigure
     public WidgetConfiguration generateWidgetConfiguration()
     {
         WidgetConfiguration widgetConfiguration = new WidgetConfiguration();
-        widgetConfiguration.setShowUserComments( mCheckBoxUserComments.isChecked() );
-        widgetConfiguration.setShowUserPhotos( mCheckBoxUserPhotos.isChecked() );
+        if ( mRadioButtonUserComments.isChecked() )
+        {
+            widgetConfiguration.setContent( Content.userComments );
+        }
+        else
+        {
+            widgetConfiguration.setContent( Content.userPhotos );
+        }
         return widgetConfiguration;
     }
 
@@ -277,7 +288,7 @@ public class FlickrWidgetConfigure
 
     private boolean isConfigurationOk()
     {
-        return mCheckBoxUserComments.isChecked() || mCheckBoxUserPhotos.isChecked();
+        return mRadioButtonUserPhotos.isChecked() || mRadioButtonUserComments.isChecked();
     }
 
     /**

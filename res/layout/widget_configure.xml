@@ -5,17 +5,21 @@
   <LinearLayout android:layout_width="fill_parent" android:layout_height="wrap_content"
     android:layout_alignParentTop="true" android:orientation="vertical">
     <Button android:id="@+id/connected_to_flickr" android:layout_width="fill_parent"
-      android:layout_height="wrap_content" android:onClick="onDisconnect"
-      android:layout_margin="5dip" />
+      android:layout_height="wrap_content" android:onClick="onDisconnect" android:layout_margin="5dip" />
 
     <TextView android:layout_width="fill_parent" android:layout_height="wrap_content"
       android:text="@string/please_configure" android:gravity="center" android:layout_margin="5dip" />
-    <CheckBox android:id="@+id/checkbox_userPhotos" android:layout_width="wrap_content"
-      android:layout_height="wrap_content" android:text="@string/content_userPhotos"
-      android:layout_margin="5dip" />
-    <CheckBox android:id="@+id/checkbox_userComments" android:layout_width="wrap_content"
-      android:layout_height="wrap_content" android:text="@string/content_userComments"
-      android:enabled="false" android:layout_margin="5dip" />
+
+    <RadioGroup android:layout_width="fill_parent" android:layout_height="wrap_content"
+      android:orientation="vertical">
+      <RadioButton android:id="@+id/radioButton_userPhotos" android:layout_width="wrap_content"
+        android:layout_height="wrap_content" android:text="@string/content_userPhotos"
+        android:layout_margin="5dip" />
+      <RadioButton android:id="@+id/radioButton_userComments" android:layout_width="wrap_content"
+        android:layout_height="wrap_content" android:layout_margin="5dip"
+        android:text="@string/content_userComments" />
+    </RadioGroup>
+
   </LinearLayout>
   <LinearLayout android:layout_width="fill_parent" android:layout_height="wrap_content"
     android:layout_alignParentBottom="true">
