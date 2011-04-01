@@ -146,14 +146,13 @@ public class WidgetUpdateService
 
                 mRootViews.removeAllViews( R.id.root );
 
-                // Create an Intent to launch the Flickr website in the default browser
-                Intent widgetIntent = new Intent( Intent.ACTION_VIEW, Uri.parse( Constants.FLICKR_ACTIVITY_URL ) );
-                PendingIntent pendingIntent = PendingIntent.getActivity( mContext, 0, widgetIntent, 0 );
-                // attach an on-click listener          
-                mRootViews.setOnClickPendingIntent( R.id.root, pendingIntent );
+                // display the loading message 
+                mRootViews.removeAllViews( R.id.root );
+                mRootViews.addView( R.id.root, new RemoteViews( mContext.getPackageName(), R.layout.loading ) );
+                pushUpdate();
 
                 String userId = mFlickrConnect.getFlickrParameters().getNsid();
-                if ( userId == null )
+                if ( userId != null )
                 {
                     Log.e( "WidgetUpdateTask: userId is null" );
                     return false;
@@ -296,8 +295,15 @@ public class WidgetUpdateService
                         mRootViews.addView( R.id.root, itemRemoteViews );
                     }
                 }
+                // Create an Intent to launch the Flickr website in the default browser
+                Intent widgetIntent = new Intent( Intent.ACTION_VIEW, Uri.parse( Constants.FLICKR_ACTIVITY_URL ) );
+                PendingIntent pendingIntent = PendingIntent.getActivity( mContext, 0, widgetIntent, 0 );
+                // attach an on-click listener          
+                mRootViews.setOnClickPendingIntent( R.id.root, pendingIntent );
+
                 // Push update for this widget to the home screen
                 pushUpdate();
+
                 Log.d( "WidgetUpdateTask : end updateWidget" );
                 return true;
             }
@@ -325,10 +331,17 @@ public class WidgetUpdateService
         {
             if ( !result.booleanValue() )
             {
-                Log.e( "Error while updating widget" );
+                Log.e( "Error while updating widget " + mAppWidgetId );
                 // display an error message if it goes wrong
                 mRootViews.removeAllViews( R.id.root );
                 mRootViews.addView( R.id.root, new RemoteViews( mContext.getPackageName(), R.layout.error ) );
+                // Create an Intent to launch the Flickr website in the default browser                
+                Intent reloadIntent = new Intent( mContext, WidgetUpdateService.class );
+                reloadIntent.putExtra( AppWidgetManager.EXTRA_APPWIDGET_ID, mAppWidgetId );
+                PendingIntent pendingIntent = PendingIntent.getService( mContext, mAppWidgetId, reloadIntent,
+                                                                        PendingIntent.FLAG_ONE_SHOT );
+                // attach an on-click listener          
+                mRootViews.setOnClickPendingIntent( R.id.reload_button, pendingIntent );
                 // Push update for this widget to the home screen
                 pushUpdate();
             }

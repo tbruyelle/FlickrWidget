@@ -27,6 +27,8 @@
   <string name="about_content">
     <a href="http://kamosoft.wordpress.com">Kamosoft</a>
     (c) 2011
+    This project is open-source and <a href="https://github.com/tbruyelle/FlickrWidget">hosted at GitHub</a>
   </string>
   <string name="about">About</string>
+  <string name="refresh">Reload</string>
 </resources>

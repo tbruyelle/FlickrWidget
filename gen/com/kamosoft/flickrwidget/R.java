@@ -35,20 +35,21 @@ public final class R {
         public static final int authnum3=0x7f08000d;
         public static final int btnAuthenticate=0x7f08000f;
         public static final int btnHelp=0x7f08000e;
-        public static final int button_commit=0x7f08001a;
+        public static final int button_commit=0x7f08001b;
         public static final int connect_button=0x7f080011;
-        public static final int connected_to_flickr=0x7f080017;
-        public static final int event_photo_icon=0x7f080012;
-        public static final int event_photo_text=0x7f080013;
-        public static final int events=0x7f080016;
+        public static final int connected_to_flickr=0x7f080018;
+        public static final int event_photo_icon=0x7f080013;
+        public static final int event_photo_text=0x7f080014;
+        public static final int events=0x7f080017;
         public static final int layout_root=0x7f080000;
         public static final int main_layout=0x7f080010;
         public static final int ok_button=0x7f080002;
-        public static final int photoBitmap=0x7f080014;
-        public static final int photoText=0x7f080015;
+        public static final int photoBitmap=0x7f080015;
+        public static final int photoText=0x7f080016;
         public static final int progress_small=0x01010000;
-        public static final int radioButton_userComments=0x7f080019;
-        public static final int radioButton_userPhotos=0x7f080018;
+        public static final int radioButton_userComments=0x7f08001a;
+        public static final int radioButton_userPhotos=0x7f080019;
+        public static final int reload_button=0x7f080012;
         public static final int root=0x7f080003;
     }
     public static final class layout {
@@ -105,6 +106,7 @@ public final class R {
         public static final int nothing=0x7f060021;
         public static final int ok=0x7f06001c;
         public static final int please_configure=0x7f060015;
+        public static final int refresh=0x7f06002a;
         public static final int ttlerror=0x7f06000b;
         public static final int ttlhelp=0x7f06000d;
         public static final int ttlwarning=0x7f06000c;
