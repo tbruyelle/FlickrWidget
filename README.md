@@ -9,6 +9,8 @@ FlickrWidget is an Android application which provides a widget to display Flickr
 
 For all Flickr queries, the application uses the [FlickrFree library][FlickrFree-Library]
 
+The application is available on the [Android Market][AM].
+
 #### Implemented features
 
 * Show the user's photos activity
@@ -24,3 +26,4 @@ For all Flickr queries, the application uses the [FlickrFree library][FlickrFree
 _Project is currently in beta version !!_
 
 [FlickrFree-Library]: https://github.com/tbruyelle/FlickrFree-Library
+[AM]: https://market.android.com/details?id=com.kamosoft.flickrwidget
