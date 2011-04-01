@@ -28,4 +28,4 @@ The application is available on the [Android Market][AM].
 _Project is currently in beta version !!_
 
 [FlickrFree-Library]: https://github.com/tbruyelle/FlickrFree-Library
-[AM]: https://market.android.com/details?id=com.kamosoft.flickrwidget
+[AM]: http://goo.gl/zVzfJ
