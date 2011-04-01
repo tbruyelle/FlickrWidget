@@ -143,16 +143,16 @@ public class WidgetUpdateService
                     Log.e( "WidgetUpdateService: not authenticated" );
                     return false;
                 }
-
-                mRootViews.removeAllViews( R.id.root );
-
+           
                 // display the loading message 
                 mRootViews.removeAllViews( R.id.root );
                 mRootViews.addView( R.id.root, new RemoteViews( mContext.getPackageName(), R.layout.loading ) );
                 pushUpdate();
+                
+                mRootViews.removeAllViews( R.id.root );
 
                 String userId = mFlickrConnect.getFlickrParameters().getNsid();
-                if ( userId != null )
+                if ( userId == null )
                 {
                     Log.e( "WidgetUpdateTask: userId is null" );
                     return false;
