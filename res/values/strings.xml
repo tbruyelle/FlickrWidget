@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
   <string name="app_name">FlickrWidget</string>
-  <string name="version">1.0</string>
+  <string name="version">0.1</string>
   <string name="connectOK">Connected to Flickr</string>
   <string name="connectKO">Unable to connect to Flickr</string>
   <string name="content_userPhotos">User photos activity</string>
@@ -26,7 +26,7 @@
   <string name="checking_network">Checking network, please wait...</string>
   <string name="about_content">
     <a href="http://kamosoft.wordpress.com">Kamosoft</a>
-    (c) 2011
+    (c) 2011\n
     This project is open-source and <a href="https://github.com/tbruyelle/FlickrWidget">hosted at GitHub</a>
   </string>
   <string name="about">About</string>
