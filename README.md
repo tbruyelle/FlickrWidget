@@ -10,6 +10,7 @@ FlickrWidget is an Android application which provides a widget to display Flickr
 For all Flickr queries, the application uses the [FlickrFree library][FlickrFree-Library]
 
 The application is available on the [Android Market][AM].
+![qrcode](http://farm6.static.flickr.com/5109/5579774410_59c438f823_o_d.png)
 
 #### Implemented features
 
