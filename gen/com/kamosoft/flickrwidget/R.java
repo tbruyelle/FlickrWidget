@@ -119,7 +119,7 @@ public final class R {
         public static final int FlickrWidget_Info=0x7f070002;
         public static final int FlickrWidget_Photo=0x7f07000d;
         public static final int FlickrWidget_Text=0x7f07000a;
-        public static final int FlickrWidget_Text_Bold=0x7f07000b;
+        public static final int FlickrWidget_Text_PhotoTitle=0x7f07000b;
         public static final int FlickrWidget_Title=0x7f070003;
         public static final int FlickrWidget_Title_Error=0x7f070006;
         public static final int FlickrWidget_Title_Icon=0x7f070007;

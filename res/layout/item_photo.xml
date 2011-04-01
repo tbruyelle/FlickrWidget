@@ -5,7 +5,7 @@
   <ImageView android:id="@+id/photoBitmap" android:src="@drawable/icon" style="@style/FlickrWidget.Photo" />
   <LinearLayout android:layout_height="wrap_content" android:orientation="vertical"
     android:layout_width="fill_parent">
-    <TextView android:text="TextView" android:id="@+id/photoText" style="@style/FlickrWidget.Text.Bold" />
+    <TextView android:text="TextView" android:id="@+id/photoText" style="@style/FlickrWidget.Text.PhotoTitle" />
 
 		<!-- this layout will be completed with the photo events -->
     <LinearLayout android:id="@+id/events" android:orientation="vertical"
