@@ -22,6 +22,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
+import android.content.res.Configuration;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -116,6 +117,15 @@ public class FlickrWidgetConfigure
         } );
 
         Log.d( "FlickrWidgetConfigure: End onCreate" );
+    }
+
+    /**
+     * @see android.app.Activity#onConfigurationChanged(android.content.res.Configuration)
+     */
+    @Override
+    public void onConfigurationChanged( Configuration newConfig )
+    {
+        super.onConfigurationChanged( newConfig );
     }
 
     /**

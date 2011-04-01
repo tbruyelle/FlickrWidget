@@ -42,22 +42,22 @@
     <service android:name="WidgetUpdateService" />
     
     <!-- the widget configuration activities -->
-    <activity android:name=".size.FlickrWidgetConfigure4X4">
+    <activity android:name=".size.FlickrWidgetConfigure4X4" android:configChanges="orientation|keyboardHidden">
       <intent-filter>
         <action android:name="android.appwidget.action.APPWIDGET_CONFIGURE" />
       </intent-filter>
     </activity>
-    <activity android:name=".size.FlickrWidgetConfigure4X3">
+    <activity android:name=".size.FlickrWidgetConfigure4X3" android:configChanges="orientation|keyboardHidden">
       <intent-filter>
         <action android:name="android.appwidget.action.APPWIDGET_CONFIGURE" />
       </intent-filter>
     </activity>
-    <activity android:name=".size.FlickrWidgetConfigure4X2">
+    <activity android:name=".size.FlickrWidgetConfigure4X2" android:configChanges="orientation|keyboardHidden">
       <intent-filter>
         <action android:name="android.appwidget.action.APPWIDGET_CONFIGURE" />
       </intent-filter>
     </activity>
-    <activity android:name=".size.FlickrWidgetConfigure4X1">
+    <activity android:name=".size.FlickrWidgetConfigure4X1" android:configChanges="orientation|keyboardHidden">
       <intent-filter>
         <action android:name="android.appwidget.action.APPWIDGET_CONFIGURE" />
       </intent-filter>
